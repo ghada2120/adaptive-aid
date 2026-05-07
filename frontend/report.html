@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adaptive Aid - Evaluation Report</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <script defer src="js/report.js"></script>
+
+  <style>
+
+    .score-banner {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .score-card {
+      background: linear-gradient(145deg, #4158D0, #C850C0);
+      color: white;
+      border-radius: 28px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    }
+
+    .score-card .label {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-bottom: 10px;
+    }
+
+    .score-card .score-text {
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .score-card {
+      background: #4f46e5;
+      color: white;
+      border-radius: 24px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    .summary-card {
+      background: #f8f9fa;
+      border-radius: 28px;
+      padding: 25px;
+    }
+
+    .summary-card h2 {
+      color: #333;
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .summary-card p {
+      color: #666;
+      line-height: 1.7;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 25px;
+    }
+
+    .stat-value {
+      font-size: 30px;
+      font-weight: 700;
+      color: #4158D0;
+      margin-bottom: 6px;
+    }
+
+    .stat-label {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .panel {
+      background: #f8f9fa;
+      border-radius: 22px;
+      padding: 22px;
+    }
+
+    .panel h3 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 20px;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tag {
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .tag-strong {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .tag-weak {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .difficulty-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+    }
+
+    .difficulty-table th,
+    .difficulty-table td {
+      padding: 14px 16px;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+    }
+
+    .difficulty-table th {
+      background: #f0f3ff;
+      color: #333;
+      font-weight: 600;
+    }
+
+    .difficulty-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 25px;
+    }
+
+    @media (max-width: 768px) {
+      .score-banner,
+      .section-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <h1>Evaluation Report</h1>
+        <p id="reportSubtitle">Your session summary</p>
+      </div>
+    </div>
+
+    <div id="reportMessage" class="message"></div>
+
+    <div class="score-banner">
+      <div class="score-card">
+        <div class="label">Overall Performance</div>
+        <div class="score-text" id="scoreText">0/0</div>
+        <div class="score-percent" id="scorePercent">0%</div>
+      </div>
+
+      <div class="summary-card">
+        <h2>Session Summary</h2>
+        <p id="summaryText">
+          Your performance summary will appear here.
+        </p>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="durationValue">0m 0s</div>
+        <div class="stat-label">Session Duration</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="answeredValue">0</div>
+        <div class="stat-label">Answered</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="correctValue">0</div>
+        <div class="stat-label">Correct</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="wrongValue">0</div>
+        <div class="stat-label">Wrong</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="skippedValue">0</div>
+        <div class="stat-label">Skipped</div>
+      </div>
+    </div>
+
+    <div class="section-grid">
+      <div class="panel">
+        <h3>Strengths</h3>
+        <div class="tag-list" id="strengthsList"></div>
+      </div>
+
+      <div class="panel">
+        <h3>Weaknesses</h3>
+        <div class="tag-list" id="weaknessesList"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Performance by Difficulty</h3>
+      <table class="difficulty-table">
+        <thead>
+          <tr>
+            <th>Difficulty</th>
+            <th>Correct</th>
+            <th>Wrong</th>
+            <th>Skipped</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Easy</td>
+            <td id="easyCorrect">0</td>
+            <td id="easyWrong">0</td>
+            <td id="easySkipped">0</td>
+          </tr>
+          <tr>
+            <td>Medium</td>
+            <td id="mediumCorrect">0</td>
+            <td id="mediumWrong">0</td>
+            <td id="mediumSkipped">0</td>
+          </tr>
+          <tr>
+            <td>Hard</td>
+            <td id="hardCorrect">0</td>
+            <td id="hardWrong">0</td>
+            <td id="hardSkipped">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-secondary" id="backToMaterialsBtn">
+        Back to Materials
+      </button>
+      <button class="btn btn-primary" id="newSessionBtn">
+        Start New Session
+      </button>
+    </div>
+  </div>
+</body>
+</html>

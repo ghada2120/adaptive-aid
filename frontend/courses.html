@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adaptive Aid - Courses</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <script defer src="js/courses.js"></script>
+
+  <style>
+
+    .add-course-box {
+      margin-bottom: 25px;
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 20px;
+    }
+
+    .add-course-box h3 {
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .add-course-form {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .add-course-form input {
+      flex: 1;
+      min-width: 220px;
+      padding: 12px 14px;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      font-family: inherit;
+    }
+
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .course-icon {
+      width: 55px;
+      height: 55px;
+      border-radius: 16px;
+      background: #f0f3ff;
+      color: #4158D0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+
+    .course-card h3 {
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .course-hint {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 0;
+    }
+
+    .course-details {
+      display: none;
+      margin-top: 18px;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .course-card.selected .course-details {
+      display: block;
+    }
+
+    .course-stats {
+      background: #f8f9fa;
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 7px 0;
+      border-bottom: 1px solid #e7e7e7;
+      font-size: 14px;
+    }
+
+    .stat-row:last-child { border-bottom: none; }
+
+    .stat-row span { color: #666; }
+    .stat-row strong { color: #4158D0; }
+
+    .course-actions {
+      display: grid;
+      gap: 10px;
+    }
+
+    .course-actions button {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      padding: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      font-family: inherit;
+    }
+
+    .setup-session-btn {
+      background: #4158D0;
+      color: white;
+    }
+
+    .history-btn {
+      background: #eef2ff;
+      color: #4158D0;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .delete-course-btn {
+      margin-left: auto;
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
+      border: none;
+      border-radius: 50%;
+      background: #fff0f0;
+      color: #dc3545;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s ease;
+    }
+
+.delete-course-btn:hover {
+  background: #dc3545;
+  color: white;
+  transform: scale(1.05);
+}
+
+.course-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.course-card-header h3 {
+  flex: 1;
+}
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div>
+        <h1>Your Courses</h1>
+        <p>Click a course to view progress and session options.</p>
+      </div>
+
+      <button class="btn btn-primary" id="logoutBtn">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+
+    <div id="coursesMessage" class="message"></div>
+
+    <div class="add-course-box">
+      <h3>Add New Course</h3>
+
+      <form id="addCourseForm" class="add-course-form">
+        <input type="text" id="courseName" placeholder="Enter course name" required />
+
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-plus"></i> Add Course
+        </button>
+      </form>
+    </div>
+
+    <div class="courses-grid" id="coursesGrid"></div>
+  </div>
+  <div id="deleteCourseModal" class="modal hidden">
+  <div class="modal-content">
+    <h3>Delete Course</h3>
+    <p>Are you sure you want to delete this course? This will also remove its materials, sessions, and reports.</p>
+
+    <div class="modal-actions">
+      <button id="cancelDeleteCourseBtn" class="btn cancel">Cancel</button>
+      <button id="confirmDeleteCourseBtn" class="btn danger">Delete</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
