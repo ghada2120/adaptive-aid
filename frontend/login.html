@@ -1,47 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Adaptive Aid Login</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adaptive Aid - Login</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
-  <div class="container">
-    <div class="logo">
-      <i class="fa-solid fa-graduation-cap"></i>
+    <div class="login-card">
+        <div class="logo-section">
+            <i class="fa-solid fa-graduation-cap graduation-icon"></i>
+            <h1>Adaptive Aid</h1>
+            <p class="subtitle">Login to continue</p>
+        </div>
+
+        <div class="form-container">
+            <div class="input-group">
+                <label>Email</label>
+                <div class="input-wrapper">
+                    <i class="fa-regular fa-envelope"></i>
+                    <input type="email" placeholder="Enter your email">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" placeholder="Enter your password">
+                    <i class="fa-regular fa-eye toggle-password"></i>
+                </div>
+            </div>
+
+            <button class="login-btn">
+                <i class="fa-solid fa-right-to-bracket"></i> Login
+            </button>
+        </div>
+
+        <a href="#" class="forgot-link">Forgot Password?</a>
+        <p class="register-text">Don't have an account? <a href="#">Register</a></p>
     </div>
-
-    <h1>Adaptive Aid</h1>
-    <p class="subtitle">Login to continue</p>
-
-    <label>Email</label>
-    <div class="input-box">
-      <i class="fa-regular fa-envelope icon-left"></i>
-      <input type="email" placeholder="Enter your email">
-    </div>
-
-    <label>Password</label>
-    <div class="input-box">
-      <i class="fa-solid fa-lock icon-left"></i>
-      <input type="password" placeholder="Enter your password">
-      <i class="fa-regular fa-eye icon-right"></i>
-    </div>
-
-    <button>
-      <i class="fa-solid fa-right-to-bracket"></i>
-      Login
-    </button>
-
-    <a href="#" class="forgot">Forgot Password?</a>
-
-    <p class="register">
-      Don't have an account?
-      <a href="#">Register</a>
-    </p>
-  </div>
 
 </body>
 </html>
