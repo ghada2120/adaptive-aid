@@ -286,69 +286,91 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  async function startQuiz() {
-    clearMessage();
+ async function startQuiz() {
+  clearMessage();
 
-    if (!selectedMaterialId) {
-      showMessage("Please select a material first.");
+  if (!selectedMaterialId) {
+    showMessage("Please select a material first.");
+    return;
+  }
+
+  if (!studentId || !courseId) {
+    showMessage("Missing student or course information.");
+    return;
+  }
+
+  // Freeze the selected material for this session
+  const materialIdForSession = selectedMaterialId;
+  const materialNameForSession = selectedMaterialName || "";
+
+  // Lock material cards while preparing
+  document.querySelectorAll(".file-card").forEach((card) => {
+    card.style.pointerEvents = "none";
+    card.style.opacity = "0.6";
+  });
+
+  if (aiGenerating) {
+    aiGenerating.style.display = "flex";
+  }
+
+  if (startSessionBtn) {
+    startSessionBtn.disabled = true;
+    startSessionBtn.textContent = "Preparing session...";
+  }
+
+  try {
+    const response = await fetch(
+      `${START_QUIZ_ENDPOINT}?student_id=${studentId}&course_id=${courseId}&course_material_id=${materialIdForSession}`,
+      {
+        method: "POST"
+      }
+    );
+
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      showMessage(data.detail || data.message || "Failed to generate quiz.");
       return;
     }
 
-    if (!studentId || !courseId) {
-      showMessage("Missing student or course information.");
-      return;
-    }
+    localStorage.removeItem("quizId");
+    localStorage.removeItem("currentQuestion");
+    localStorage.removeItem("answeredCount");
+    localStorage.removeItem("score");
+    localStorage.removeItem("lastAnswerResult");
+    localStorage.removeItem("reportId");
+    localStorage.removeItem("reportData");
+    localStorage.removeItem("displayQuestionNumber");
+    localStorage.removeItem("sessionStartTime");
 
+    localStorage.setItem("selectedMaterialId", String(materialIdForSession));
+    localStorage.setItem("selectedMaterialName", materialNameForSession);
+    localStorage.setItem("quizId", String(data.quiz_id));
+    localStorage.setItem("selectedCourseName", courseName || "");
+    localStorage.setItem("displayQuestionNumber", "1");
+    localStorage.setItem("sessionStartTime", Date.now().toString());
+
+    window.location.href = "session.html";
+
+  } catch (error) {
+    console.error("Start quiz error:", error);
+    showMessage("Could not start the quiz.");
+  } finally {
     if (aiGenerating) {
-      aiGenerating.style.display = "flex";
+      aiGenerating.style.display = "none";
     }
 
     if (startSessionBtn) {
-      startSessionBtn.disabled = true;
+      startSessionBtn.disabled = false;
+      startSessionBtn.textContent = "Start Session";
     }
 
-    try {
-      const response = await fetch(
-        `${START_QUIZ_ENDPOINT}?student_id=${studentId}&course_id=${courseId}&course_material_id=${selectedMaterialId}`,
-        {
-          method: "POST"
-        }
-      );
-
-      const data = await response.json().catch(() => ({}));
-
-      if (!response.ok) {
-        if (aiGenerating) aiGenerating.style.display = "none";
-        if (startSessionBtn) startSessionBtn.disabled = false;
-        showMessage(data.detail || data.message || "Failed to generate quiz.");
-        return;
-      }
-
-      localStorage.removeItem("quizId");
-      localStorage.removeItem("currentQuestion");
-      localStorage.removeItem("answeredCount");
-      localStorage.removeItem("score");
-      localStorage.removeItem("lastAnswerResult");
-      localStorage.removeItem("reportId");
-      localStorage.removeItem("reportData");
-      localStorage.removeItem("displayQuestionNumber");
-      localStorage.removeItem("sessionStartTime");
-
-      localStorage.setItem("selectedMaterialId", String(selectedMaterialId));
-      localStorage.setItem("selectedMaterialName", selectedMaterialName || "");
-      localStorage.setItem("quizId", String(data.quiz_id));
-      localStorage.setItem("selectedCourseName", courseName || "");
-      localStorage.setItem("displayQuestionNumber", "1");
-      localStorage.setItem("sessionStartTime", Date.now().toString());
-
-      window.location.href = "session.html";
-    } catch (error) {
-      console.error("Start quiz error:", error);
-      if (aiGenerating) aiGenerating.style.display = "none";
-      if (startSessionBtn) startSessionBtn.disabled = false;
-      showMessage("Could not start the quiz.");
-    }
+    document.querySelectorAll(".file-card").forEach((card) => {
+      card.style.pointerEvents = "auto";
+      card.style.opacity = "1";
+    });
   }
+}
 
   if (backToCoursesBtn) {
     backToCoursesBtn.addEventListener("click", () => {

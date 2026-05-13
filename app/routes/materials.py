@@ -55,6 +55,20 @@ def upload_material(
             detail="Invalid file type"
         )
 
+    MAX_FILE_SIZE = 15 * 1024 * 1024  # 10 MB
+
+    # Move pointer to end of file
+    file.file.seek(0, 2)
+    file_size = file.file.tell()
+
+    # Reset pointer back to beginning
+    file.file.seek(0)
+
+    if file_size > MAX_FILE_SIZE:
+        raise HTTPException(
+        status_code=400,
+        detail=f"File too large (max {MAX_FILE_SIZE // (1024*1024)}MB)"    )
+
     unique_name = f"{uuid.uuid4()}{file_ext}"
     save_path = UPLOAD_DIR / unique_name
 

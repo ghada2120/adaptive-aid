@@ -526,8 +526,8 @@ def end_quiz(quiz_id: int, session: Session = Depends(get_session)):
         },
         "difficulty_breakdown": difficulty_breakdown,
         "subtopic_breakdown": subtopic_stats,
-        "strengths": strengths if strengths else ["No clear strength identified yet"],
-        "weaknesses": weaknesses if weaknesses else ["No clear weakness identified yet"]
+        "strengths": strengths if strengths else ["No clear strength identified"],
+        "weaknesses": weaknesses if weaknesses else ["No clear weakness identified"]
     }
 
     existing_report = session.exec(
