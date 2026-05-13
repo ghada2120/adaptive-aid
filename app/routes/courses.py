@@ -3,7 +3,7 @@ from sqlmodel import Session, select
 
 from app.db import get_session
 from app.models import Course, Student, CourseMaterial, Quiz, Question, QuestionOptions, Response, Report
-from app.schemas import CreateCourseRequest
+from app.schemas import CreateCourseRequest, RenameCourseRequest
 
 from pathlib import Path
 router = APIRouter(prefix="/courses", tags=["Courses"])
@@ -105,4 +105,32 @@ def delete_course(course_id: int, session: Session = Depends(get_session)):
     return {
         "message": "Course deleted successfully",
         "course_id": course_id
+    }
+
+@router.put("/{course_id}")
+def rename_course(
+    course_id: int,
+    data: RenameCourseRequest,
+    session: Session = Depends(get_session)
+):
+    course = session.get(Course, course_id)
+
+    if not course:
+        raise HTTPException(status_code=404, detail="Course not found")
+
+    new_name = data.course_name.strip()
+
+    if not new_name:
+        raise HTTPException(status_code=400, detail="Course name cannot be empty")
+
+    course.name = new_name
+
+    session.add(course)
+    session.commit()
+    session.refresh(course)
+
+    return {
+        "message": "Course renamed successfully",
+        "course_id": course.id,
+        "course_name": course.name
     }

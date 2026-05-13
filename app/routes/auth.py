@@ -103,7 +103,7 @@ async def register(data: RegisterRequest, session: Session = Depends(get_session
 
     if existing_student:
         if existing_student.is_email_verified:
-            raise HTTPException(status_code=400, detail="Email already exists")
+            raise HTTPException(status_code=400, detail="Email already exists. Please log in instead.")
 
         verification_token = str(uuid.uuid4())
         existing_student.verification_token = verification_token
@@ -117,12 +117,12 @@ async def register(data: RegisterRequest, session: Session = Depends(get_session
         email_body = f"""
         <h2>Verify your Adaptive Aid account</h2>
         <p>Hello {existing_student.name},</p>
-        <p>Your account already exists but has not been verified yet.</p>
+        <p>This email is already registered but has not been verified yet.</p>
         <p>Please click the link below to verify your email address:</p>
         <p>
-          <a href="{verification_link}">
+        <a href="{verification_link}">
             Verify Email
-          </a>
+        </a>
         </p>
         """
 
@@ -134,20 +134,24 @@ async def register(data: RegisterRequest, session: Session = Depends(get_session
             )
 
             return {
-                "message": "Account already exists but is not verified. A new verification email has been sent.",
+                "message": "This email is already registered but not verified. A new verification email has been sent.",
                 "student_id": existing_student.id,
                 "name": existing_student.name,
-                "email": existing_student.email
+                "email": existing_student.email,
+                "account_exists": True,
+                "is_email_verified": False
             }
 
         except Exception as e:
             return {
-                "message": "Account already exists but is not verified. Verification email could not be sent.",
+                "message": "This email is already registered but not verified. Verification email could not be sent.",
                 "student_id": existing_student.id,
                 "name": existing_student.name,
                 "email": existing_student.email,
                 "verification_link": verification_link,
-                "email_error": str(e)
+                "email_error": str(e),
+                "account_exists": True,
+                "is_email_verified": False
             }
 
     verification_token = str(uuid.uuid4())
@@ -205,7 +209,7 @@ async def register(data: RegisterRequest, session: Session = Depends(get_session
 
 
 @router.post("/login")
-def login(data: LoginRequest, session: Session = Depends(get_session)):
+async def login(data: LoginRequest, session: Session = Depends(get_session)):
     student = session.exec(
         select(Student).where(Student.email == data.email)
     ).first()
@@ -217,7 +221,41 @@ def login(data: LoginRequest, session: Session = Depends(get_session)):
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
     if not student.is_email_verified:
-        raise HTTPException(status_code=403, detail="Please verify your email first")
+        # generate new token
+        new_token = str(uuid.uuid4())
+        student.verification_token = new_token
+
+        session.add(student)
+        session.commit()
+        session.refresh(student)
+
+        verification_link = f"{BACKEND_URL}/auth/verify-email?token={new_token}"
+
+        email_body = f"""
+        <h2>Verify your Adaptive Aid account</h2>
+        <p>Hello {student.name},</p>
+        <p>You tried logging in, but your account is not verified yet.</p>
+        <p>Please click below to verify your email:</p>
+        <p><a href="{verification_link}">Verify Email</a></p>
+        """
+
+        try:
+            await send_email(
+                to_email=student.email,
+                subject="Verify your Adaptive Aid account",
+                body=email_body
+            )
+
+            raise HTTPException(
+                status_code=403,
+                detail="Your account is not verified. A new verification email has been sent."
+            )
+
+        except Exception:
+            raise HTTPException(
+                status_code=403,
+                detail="Your account is not verified. We could not send the email, but you can use the verification link manually.",
+            )   
 
     return {
         "message": "Login successful",
@@ -235,7 +273,7 @@ def verify_email(token: str, session: Session = Depends(get_session)):
 
     if not student:
         return RedirectResponse(
-            url=f"{FRONTEND_URL}/verify_success.html?status=invalid"
+            url=f"{FRONTEND_URL}/register.html?verification=invalid"
         )
 
     student.is_email_verified = True
@@ -246,16 +284,15 @@ def verify_email(token: str, session: Session = Depends(get_session)):
     session.refresh(student)
 
     return RedirectResponse(
-        url=f"{FRONTEND_URL}/verify_success.html?status=success"
+        url=f"{FRONTEND_URL}/login.html?verified=success"
     )
-
 @router.post("/forgot-password")
 async def forgot_password(email: str, session: Session = Depends(get_session)):
     student = session.exec(
         select(Student).where(Student.email == email)
     ).first()
 
-    safe_message = "If an account uses this email, a password reset link has been sent."
+    safe_message = "If an account exists with this email, a password reset link has been sent."
 
     if not student:
         return {"message": safe_message}
@@ -263,8 +300,8 @@ async def forgot_password(email: str, session: Session = Depends(get_session)):
     token = str(uuid.uuid4())
 
     student.reset_token = token
-    student.reset_token_expires = datetime.now(timezone.utc) + timedelta(minutes=15)
-
+    student.reset_token_expires = datetime.utcnow() + timedelta(minutes=15)
+    
     session.add(student)
     session.commit()
     session.refresh(student)
@@ -296,18 +333,44 @@ async def forgot_password(email: str, session: Session = Depends(get_session)):
             "reset_link": reset_link,
             "email_error": str(e)
         }
-
+        
 @router.post("/reset-password")
-def reset_password(token: str, new_password: str, session: Session = Depends(get_session)):
+def reset_password(data: dict, session: Session = Depends(get_session)):
+    token = data.get("token")
+    new_password = data.get("new_password")
+
+    if not token or not new_password:
+        raise HTTPException(status_code=400, detail="Missing token or password.")
+
     student = session.exec(
         select(Student).where(Student.reset_token == token)
     ).first()
 
     if not student:
-        raise HTTPException(status_code=400, detail="Invalid token")
+        raise HTTPException(status_code=400, detail="Invalid or expired reset link.")
 
-    if student.reset_token_expires < datetime.now(timezone.utc):
-        raise HTTPException(status_code=400, detail="Token expired")
+    expires_at = student.reset_token_expires
+
+    if expires_at.tzinfo is not None:
+        expires_at = expires_at.replace(tzinfo=None)
+
+    if expires_at < datetime.utcnow():
+        raise HTTPException(status_code=400, detail="This reset link has expired.")
+
+    password_error = validate_password_policy(
+        password=new_password,
+        name=student.name,
+        email=student.email
+    )
+
+    if password_error:
+        raise HTTPException(status_code=400, detail=password_error)
+
+    if verify_password(new_password, student.hash_pwd):
+        raise HTTPException(
+            status_code=400,
+            detail="New password cannot be the same as your old password."
+        )
 
     student.hash_pwd = hash_password(new_password)
     student.reset_token = None

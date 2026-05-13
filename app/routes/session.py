@@ -264,21 +264,21 @@ def start_quiz(data: StartQuizRequest, session: Session = Depends(get_session)):
             quiz_id=quiz.id,
             txt_file_path=str(txt_file_path),
             difficulty_level=1,
-            count=3,
+            count=5,
             session=session
         )
         generate_and_save_question_bank_for_difficulty(
             quiz_id=quiz.id,
             txt_file_path=str(txt_file_path),
             difficulty_level=2,
-            count=3,
+            count=5,
             session=session
         )
         generate_and_save_question_bank_for_difficulty(
             quiz_id=quiz.id,
             txt_file_path=str(txt_file_path),
             difficulty_level=3,
-            count=3,
+            count=5,
             session=session
         )
     except Exception as e:
@@ -368,7 +368,7 @@ def submit_answer(quiz_id: int, data: SubmitAnswerRequest, session: Session = De
                 quiz_id=quiz_id,
                 txt_file_path=str(txt_file_path),
                 difficulty_level=next_difficulty,
-                count=3,
+                count=5,
                 session=session
             )
             replenished = True

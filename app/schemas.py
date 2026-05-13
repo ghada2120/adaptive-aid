@@ -30,3 +30,6 @@ class SubmitAnswerRequest(BaseModel):
 
 class CreateMaterialRequest(BaseModel):
     course_id: int
+
+class RenameCourseRequest(BaseModel):
+    course_name: str

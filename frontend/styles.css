@@ -129,6 +129,12 @@ body {
   display: block;
 }
 
+.feedback-message.neutral {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fcd34d;
+}
+
 .course-card,
 .file-card,
 .report-card,
@@ -305,5 +311,259 @@ a.btn {
 }
 
 .password-rules li.invalid {
-  color: #dc3545;
+  color: #9ca3af;;
+}
+.course-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rename-course-btn {
+  border: none;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #4f46e5;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.rename-course-btn:hover {
+  background: #4f46e5;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.rename-input {
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-family: inherit;
+  color: #333;
+  border: none;
+  border-bottom: 2px solid #4f46e5;
+  outline: none;
+  background: transparent;
+  padding: 4px 2px;
+  max-width: 180px;
+}
+
+.reset-card {
+  width: 100%;
+  max-width: 460px;
+  padding: 36px;
+}
+
+.auth-subtitle {
+  color: #6b7280;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+.auth-input:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.password-rules {
+  width: 100%;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin: 8px 0 18px;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.password-rules p {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.password-rules ul {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.password-rules li.valid {
+  color: #15803d;
+}
+
+.password-rules li.invalid {
+  color: #9ca3af;
+}
+
+.center-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.verify-card,
+.reset-card,
+.auth-card {
+  width: 100%;
+  max-width: 500px;
+  background: white;
+  border-radius: 28px;
+  padding: 38px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.verify-card h1 {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.auth-subtitle,
+.verify-card p {
+  color: #6b7280;
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 22px;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 15px 16px;
+  border-radius: 14px;
+  border: 1px solid #d1d5db;
+  font-size: 15px;
+  margin-bottom: 14px;
+  transition: 0.2s ease;
+}
+
+.auth-input:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
+}
+
+.password-rules {
+  margin-top: 6px;
+  margin-bottom: 20px;
+}
+
+.password-rules li {
+  transition: 0.2s ease;
+}
+
+#resetBtn,
+#sendBtn {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.message {
+  margin-top: 14px;
+}
+
+/* Mobile + small screens */
+@media (max-width: 768px) {
+  body {
+    padding: 12px;
+  }
+
+  .container,
+  .verify-card,
+  .auth-card,
+  .reset-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 22px;
+    border-radius: 20px;
+  }
+
+  .topbar,
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+  }
+
+  .topbar h1,
+  .header h1,
+  .verify-card h1 {
+    font-size: 24px;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .course-card {
+    padding: 18px;
+  }
+
+  .course-card-header {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .course-header-actions {
+    margin-left: auto;
+  }
+
+  .course-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .course-actions button {
+    width: 100%;
+  }
+
+  .stat-row {
+    font-size: 14px;
+  }
+
+  .modal-content {
+    width: 92%;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 420px) {
+  body {
+    padding: 8px;
+  }
+
+  .verify-card,
+  .auth-card,
+  .reset-card {
+    padding: 18px;
+  }
+
+  .verify-card h1 {
+    font-size: 22px;
+  }
+
+  .auth-input {
+    font-size: 14px;
+  }
+
+  .password-rules {
+    font-size: 13px;
+  }
 }

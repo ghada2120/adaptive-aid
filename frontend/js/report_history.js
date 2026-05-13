@@ -18,12 +18,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function formatDate(dateString) {
-  if (!dateString) return "No sessions yet";
+  if (!dateString) return "Unknown date";
 
-  const date = new Date(dateString);
+  let fixedDateString = dateString;
+
+  if (!fixedDateString.endsWith("Z") && !fixedDateString.includes("+")) {
+    fixedDateString += "Z";
+  }
+
+  const date = new Date(fixedDateString);
 
   if (Number.isNaN(date.getTime())) {
-    return "No sessions yet";
+    return "Unknown date";
   }
 
   return date.toLocaleString("en-GB", {

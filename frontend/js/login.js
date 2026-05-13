@@ -6,6 +6,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginMessage = document.getElementById("loginMessage");
   const loginBtn = document.getElementById("loginBtn");
 
+  const urlParams = new URLSearchParams(window.location.search);
+
+  if (urlParams.get("verified") === "success") {
+    showMessage(
+      "Email verified successfully. You can now log in.",
+      "success"
+    );
+  }
+
   function showMessage(text, type = "error") {
     loginMessage.textContent = text;
     loginMessage.className = `message ${type}`;
@@ -46,9 +55,20 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await response.json().catch(() => ({}));
 
       if (!response.ok) {
-        showMessage(data.detail || data.message || "Login failed.");
+        const errorMsg = data.detail || data.message || "";
+
+  
+        if (response.status === 403 && errorMsg.toLowerCase().includes("not verified")) {
+        showMessage(
+        "Your account is not verified. We sent you a new verification email. Please check your inbox.",
+        "error"
+      );
+        } else {
+            showMessage(errorMsg || "Login failed. Please try again.");
+        }
+
         return;
-      }
+  } 
 
       localStorage.setItem("studentId", String(data.student_id));
       localStorage.setItem("studentName", data.name || "");

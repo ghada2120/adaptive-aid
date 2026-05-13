@@ -62,10 +62,17 @@ def generate_questions_from_material(
             payload = generate_mcq_bank_from_material(
                 material_text=material_text,
                 difficulty_level=difficulty_level,
-                count=3
+                count=5
             )
 
+            print("DIFFICULTY:", difficulty_level)
+            print("AI RAW COUNT:", len(payload.get("questions", [])))
+            print("AI RAW PAYLOAD:", payload)
+
             is_valid, valid_questions, errors = validate_generated_questions_payload(payload)
+
+            print("VALID COUNT:", len(valid_questions))
+            print("VALIDATION ERRORS:", errors)
 
             all_valid_questions.extend(valid_questions)
             all_errors.extend(errors)
@@ -240,6 +247,7 @@ def submit_answer(data: SubmitAnswerRequest, session: Session = Depends(get_sess
 @router.get("/next/{quiz_id}")
 def get_next_question(quiz_id: int, session: Session = Depends(get_session)):
     quiz = session.get(Quiz, quiz_id)
+
     if not quiz:
         raise HTTPException(status_code=404, detail="Quiz not found")
 
@@ -259,28 +267,8 @@ def get_next_question(quiz_id: int, session: Session = Depends(get_session)):
     ).all()
 
     answered_question_ids = {r.question_id for r in responses}
-    unanswered_questions = [q for q in questions if q.id not in answered_question_ids]
 
-    if not unanswered_questions:
-        if quiz.end_time is None:
-            from datetime import datetime, timezone
-            quiz.end_time = datetime.now(timezone.utc)
-            session.add(quiz)
-            session.commit()
-
-        return {
-            "message": "Quiz completed"
-        }
-
-    # first question starts at medium if available
-    if not responses:
-        medium_questions = [q for q in unanswered_questions if q.difficulty_level == 2]
-
-        if medium_questions:
-            q = medium_questions[0]
-        else:
-            q = unanswered_questions[0]
-
+    def format_question(q: Question):
         options = session.exec(
             select(QuestionOptions).where(QuestionOptions.question_id == q.id)
         ).all()
@@ -290,6 +278,8 @@ def get_next_question(quiz_id: int, session: Session = Depends(get_session)):
             "question_no": q.question_no,
             "question_text": q.question_text,
             "difficulty_level": q.difficulty_level,
+            "topic": q.topic,
+            "subtopic": q.subtopic,
             "options": [
                 {
                     "id": op.id,
@@ -299,58 +289,154 @@ def get_next_question(quiz_id: int, session: Session = Depends(get_session)):
             ]
         }
 
-    last_response = responses[-1]
-    last_question = session.get(Question, last_response.question_id)
+    def get_unanswered_question_by_difficulty(difficulty_level: int):
+        updated_questions = session.exec(
+            select(Question).where(
+                Question.quiz_id == quiz_id,
+                Question.difficulty_level == difficulty_level
+            )
+        ).all()
 
-    target_difficulty = last_question.difficulty_level
+        for q in updated_questions:
+            if q.id not in answered_question_ids:
+                return q
 
-    if last_response.is_skipped:
-        target_difficulty = last_question.difficulty_level
-    elif last_response.is_correct is True:
-        target_difficulty = min(3, last_question.difficulty_level + 1)
-    elif last_response.is_correct is False:
-        target_difficulty = max(1, last_question.difficulty_level - 1)
+        return None
 
-    if target_difficulty == 1:
-        difficulty_order = [1, 2, 3]
-    elif target_difficulty == 2:
-        difficulty_order = [2, 1, 3]
-    else:
-        difficulty_order = [3, 2, 1]
+    def get_existing_question_texts_for_difficulty(difficulty_level: int):
+        existing_texts = session.exec(
+            select(Question.question_text).where(
+                Question.quiz_id == quiz_id,
+                Question.difficulty_level == difficulty_level
+            )
+        ).all()
 
-    q = None
-    for level in difficulty_order:
-        candidates = [question for question in unanswered_questions if question.difficulty_level == level]
-        if candidates:
-            q = candidates[0]
-            break
+        return list(existing_texts)
 
-    if q is None:
-        if quiz.end_time is None:
-            from datetime import datetime, timezone
-            quiz.end_time = datetime.now(timezone.utc)
-            session.add(quiz)
+    def generate_more_questions_for_difficulty(difficulty_level: int, count: int = 5):
+        if not quiz.course_material_id:
+            raise HTTPException(
+                status_code=400,
+                detail="Quiz is missing course material ID. Cannot generate more questions."
+            )
+
+        material = session.get(CourseMaterial, quiz.course_material_id)
+
+        if not material:
+            raise HTTPException(status_code=404, detail="Course material not found")
+
+        try:
+            material_text = extract_text_from_material(material.file_path)
+        except Exception as e:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Failed to extract text from material: {str(e)}"
+            )
+
+        if not material_text.strip():
+            raise HTTPException(status_code=400, detail="Extracted material text is empty")
+
+        excluded_questions = get_existing_question_texts_for_difficulty(difficulty_level)
+
+        try:
+            payload = generate_mcq_bank_from_material(
+                material_text=material_text,
+                difficulty_level=difficulty_level,
+                count=count,
+                excluded_questions=excluded_questions
+            )
+
+            is_valid, valid_questions, errors = validate_generated_questions_payload(payload)
+
+            if not is_valid or not valid_questions:
+                raise HTTPException(
+                    status_code=500,
+                    detail=f"AI did not generate valid questions. Errors: {errors}"
+                )
+
+        except HTTPException:
+            raise
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Failed to generate more questions: {str(e)}"
+            )
+
+        current_max_question_no = session.exec(
+            select(Question.question_no).where(Question.quiz_id == quiz_id)
+        ).all()
+
+        next_question_no = max(current_max_question_no) + 1 if current_max_question_no else 1
+
+        created_questions = []
+
+        for q_data in valid_questions:
+            question = Question(
+                question_no=next_question_no,
+                difficulty_level=q_data["difficulty_level"],
+                question_text=q_data["question_text"],
+                topic=q_data.get("topic"),
+                subtopic=q_data.get("subtopic"),
+                quiz_id=quiz.id
+            )
+
+            session.add(question)
+            session.commit()
+            session.refresh(question)
+
+            for op_data in q_data["options"]:
+                option = QuestionOptions(
+                    question_id=question.id,
+                    option_text=op_data["option_text"],
+                    is_correct=op_data["is_correct"]
+                )
+                session.add(option)
+
             session.commit()
 
-        return {
-            "message": "Quiz completed"
-        }
+            created_questions.append(question)
+            next_question_no += 1
 
-    options = session.exec(
-        select(QuestionOptions).where(QuestionOptions.question_id == q.id)
-    ).all()
+        return created_questions
+
+    # First question starts at medium
+    if not responses:
+        target_difficulty = 2
+    else:
+        last_response = responses[-1]
+        last_question = session.get(Question, last_response.question_id)
+
+        if not last_question:
+            raise HTTPException(status_code=404, detail="Last question not found")
+
+        if last_response.is_skipped:
+            target_difficulty = last_question.difficulty_level
+        elif last_response.is_correct is True:
+            target_difficulty = min(3, last_question.difficulty_level + 1)
+        elif last_response.is_correct is False:
+            target_difficulty = max(1, last_question.difficulty_level - 1)
+        else:
+            target_difficulty = last_question.difficulty_level
+
+    q = get_unanswered_question_by_difficulty(target_difficulty)
+
+    if q:
+        result = format_question(q)
+        result["debug_target_difficulty"] = target_difficulty
+        result["debug_source"] = "existing_question"
+        return result
+
+    # If target difficulty is empty, generate more questions for SAME difficulty
+    generate_more_questions_for_difficulty(target_difficulty, count=5)
+
+    q = get_unanswered_question_by_difficulty(target_difficulty)
+
+    if q:
+        result = format_question(q)
+        result["debug_target_difficulty"] = target_difficulty
+        result["debug_source"] = "ai_replenished_question"
+        return result
 
     return {
-        "question_id": q.id,
-        "question_no": q.question_no,
-        "question_text": q.question_text,
-        "difficulty_level": q.difficulty_level,
-        "debug_target_difficulty": target_difficulty,
-        "options": [
-            {
-                "id": op.id,
-                "option_text": op.option_text
-            }
-            for op in options
-        ]
+        "message": "Quiz completed"
     }

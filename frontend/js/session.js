@@ -336,17 +336,11 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       if (isSkipped) {
-        showMessage(
-          `Question skipped. Correct answer: ${data.correct_option_text}`,
-          "success"
-        );
+        showMessage( "Question skipped.","neutral");
       } else if (data.is_correct === true) {
-        showMessage("Correct! Review the answer, then click Next Question.", "success");
+        showMessage("Correct!", "success");
       } else {
-        showMessage(
-          `Incorrect. Correct answer: ${data.correct_option_text}`,
-          "error"
-        );
+        showMessage("Incorrect." , "error");
       }
 
       updateTopInfo();

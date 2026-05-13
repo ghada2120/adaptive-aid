@@ -16,6 +16,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const studentId = localStorage.getItem("studentId");
   let courseToDelete = null;
 
+  function formatDate(dateString) {
+    if (!dateString) return "No sessions yet";
+
+    const date = new Date(dateString);
+
+    if (Number.isNaN(date.getTime())) {
+      return "No sessions yet";
+    }
+
+    return date.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric"
+    });
+  }
+
   function showMessage(text, type = "error") {
     if (!coursesMessage) return;
     coursesMessage.textContent = text;
@@ -27,18 +43,6 @@ document.addEventListener("DOMContentLoaded", () => {
     coursesMessage.textContent = "";
     coursesMessage.className = "message";
   }
-
-  function formatDate(dateString) {
-  if (!dateString) return "Unknown date";
-
-  const date = new Date(dateString);
-
-  if (Number.isNaN(date.getTime())) {
-    return "Unknown date";
-  }
-
-  return date.toLocaleString(); 
-}
 
   function openDeleteCourseModal(courseId) {
     courseToDelete = courseId;
@@ -55,6 +59,43 @@ document.addEventListener("DOMContentLoaded", () => {
       deleteCourseModal.classList.add("hidden");
     }
   }
+
+  async function renameCourse(courseId, newName) {
+  clearMessage();
+
+  if (!newName || !newName.trim()) {
+    showMessage("Course name cannot be empty.");
+    return false;
+  }
+
+  try {
+    const response = await fetch(`${COURSES_ENDPOINT}/${courseId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        course_name: newName.trim()
+      })
+    });
+
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      showMessage(data.detail || data.message || "Failed to rename course.");
+      return false;
+    }
+
+    showMessage("Course renamed successfully.", "success");
+    await loadCourses();
+    return true;
+
+  } catch (error) {
+    console.error("Rename course error:", error);
+    showMessage("Could not rename course.");
+    return false;
+  }
+}
 
   async function confirmDeleteCourse() {
     if (!courseToDelete) {
@@ -100,110 +141,163 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderCourses(courses) {
-    coursesGrid.innerHTML = "";
+  coursesGrid.innerHTML = "";
 
-    if (!Array.isArray(courses) || courses.length === 0) {
-      coursesGrid.innerHTML = `
-        <div class="course-card">
-          <div class="course-icon"><i class="fas fa-circle-info"></i></div>
-          <h3>No courses found</h3>
-          <p class="course-hint">Add your first course above.</p>
+  if (!Array.isArray(courses) || courses.length === 0) {
+    coursesGrid.innerHTML = `
+      <div class="course-card">
+        <div class="course-icon"><i class="fas fa-circle-info"></i></div>
+        <h3>No courses found</h3>
+        <p class="course-hint">Add your first course above.</p>
+      </div>
+    `;
+    return;
+  }
+
+  courses.forEach((course) => {
+    const card = document.createElement("div");
+    card.className = "course-card";
+
+    const courseId = course.course_id ?? course.id ?? "";
+    const courseName = course.course_name ?? course.name ?? "Untitled Course";
+
+    const averageScore = Number(course.average_score || 0).toFixed(1);
+    const highestScore = Number(course.highest_score || 0).toFixed(1);
+    const sessionsCompleted = course.sessions_completed || 0;
+
+    const lastSessionDate = sessionsCompleted > 0
+      ? formatDate(course.last_session_date)
+      : "No sessions yet";
+
+    card.innerHTML = `
+      <div class="course-card-header">
+        <div class="course-icon">
+          <i class="fas fa-book"></i>
         </div>
-      `;
-      return;
-    }
 
-    courses.forEach((course) => {
-      const card = document.createElement("div");
-      card.className = "course-card";
+        <h3 class="course-name">${courseName}</h3>
 
-      const courseId = course.course_id ?? course.id ?? "";
-      const courseName = course.course_name ?? course.name ?? "Untitled Course";
-
-      const averageScore = Number(course.average_score || 0).toFixed(1);
-      const highestScore = Number(course.highest_score || 0).toFixed(1);
-      const sessionsCompleted = course.sessions_completed || 0;
-      const lastSessionDate = formatDate(course.last_session_date);
-
-      card.innerHTML = `
-        <div class="course-card-header">
-          <div class="course-icon">
-            <i class="fas fa-book"></i>
-          </div>
-
-          <h3>${courseName}</h3>
+        <div class="course-header-actions">
+          <button class="rename-course-btn" type="button" title="Rename course">
+            Rename
+          </button>
 
           <button class="delete-course-btn" type="button" title="Delete course">
             <i class="fas fa-trash"></i>
           </button>
         </div>
+      </div>
 
-        <div class="course-details">
-          <div class="course-stats">
-            <div class="stat-row">
-              <span>Average Score</span>
-              <strong>${averageScore}%</strong>
-            </div>
-            <div class="stat-row">
-              <span>Highest Score</span>
-              <strong>${highestScore}%</strong>
-            </div>
-            <div class="stat-row">
-              <span>Sessions Completed</span>
-              <strong>${sessionsCompleted}</strong>
-            </div>
-            <div class="stat-row">
-              <span>Last Session</span>
-              <strong>${lastSessionDate}</strong>
-            </div>
+      <div class="course-details">
+        <div class="course-stats">
+          <div class="stat-row">
+            <span>Average Score</span>
+            <strong>${averageScore}%</strong>
           </div>
-
-          <div class="course-actions">
-            <button class="setup-session-btn" type="button">
-              <i class="fas fa-play"></i> Set Up New Session
-            </button>
-
-            <button class="history-btn" type="button">
-              <i class="fas fa-chart-line"></i> View Report History
-            </button>
+          <div class="stat-row">
+            <span>Highest Score</span>
+            <strong>${highestScore}%</strong>
+          </div>
+          <div class="stat-row">
+            <span>Sessions Completed</span>
+            <strong>${sessionsCompleted}</strong>
+          </div>
+          <div class="stat-row">
+            <span>Last Session</span>
+            <strong>${lastSessionDate}</strong>
           </div>
         </div>
-      `;
 
-      card.addEventListener("click", () => {
-        document.querySelectorAll(".course-card").forEach((c) => {
-          if (c !== card) c.classList.remove("selected");
-        });
+        <div class="course-actions">
+          <button class="setup-session-btn" type="button">
+            <i class="fas fa-play"></i> Set Up New Session
+          </button>
 
-        card.classList.toggle("selected");
+          <button class="history-btn" type="button">
+            <i class="fas fa-chart-line"></i> View Report History
+          </button>
+        </div>
+      </div>
+    `;
+
+    card.addEventListener("click", () => {
+      document.querySelectorAll(".course-card").forEach((c) => {
+        if (c !== card) c.classList.remove("selected");
       });
 
-      const setupSessionBtn = card.querySelector(".setup-session-btn");
-      const historyBtn = card.querySelector(".history-btn");
-      const deleteCourseBtn = card.querySelector(".delete-course-btn");
-
-      setupSessionBtn.addEventListener("click", (event) => {
-        event.stopPropagation();
-        localStorage.setItem("selectedCourseId", String(courseId));
-        localStorage.setItem("selectedCourseName", courseName);
-        window.location.href = "materials.html";
-      });
-
-      historyBtn.addEventListener("click", (event) => {
-        event.stopPropagation();
-        localStorage.setItem("selectedCourseId", String(courseId));
-        localStorage.setItem("selectedCourseName", courseName);
-        window.location.href = "report_history.html";
-      });
-
-      deleteCourseBtn.addEventListener("click", (event) => {
-        event.stopPropagation();
-        openDeleteCourseModal(courseId);
-      });
-
-      coursesGrid.appendChild(card);
+      card.classList.toggle("selected");
     });
-  }
+
+    const setupSessionBtn = card.querySelector(".setup-session-btn");
+    const historyBtn = card.querySelector(".history-btn");
+    const deleteCourseBtn = card.querySelector(".delete-course-btn");
+    const renameCourseBtn = card.querySelector(".rename-course-btn");
+    const courseNameEl = card.querySelector(".course-name");
+
+    setupSessionBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      localStorage.setItem("selectedCourseId", String(courseId));
+      localStorage.setItem("selectedCourseName", courseName);
+      window.location.href = "materials.html";
+    });
+
+    historyBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      localStorage.setItem("selectedCourseId", String(courseId));
+      localStorage.setItem("selectedCourseName", courseName);
+      window.location.href = "report_history.html";
+    });
+
+    renameCourseBtn.addEventListener("click", (event) => {
+  event.stopPropagation();
+
+  const input = document.createElement("input");
+  input.value = courseName;
+  input.className = "rename-input";
+
+  courseNameEl.replaceWith(input);
+  input.focus();
+
+  // save when clicking away
+  input.addEventListener("blur", async () => {
+    const newName = input.value.trim();
+
+    if (!newName || newName === courseName) {
+      input.replaceWith(courseNameEl);
+      return;
+    }
+
+    await renameCourse(courseId, newName);
+  });
+
+  // save when pressing Enter
+  input.addEventListener("keydown", async (e) => {
+    if (e.key === "Enter") {
+      const newName = input.value.trim();
+
+      if (!newName || newName === courseName) {
+        input.replaceWith(courseNameEl);
+        return;
+      }
+
+      await renameCourse(courseId, newName);
+    }
+
+    // cancel on Escape
+    if (e.key === "Escape") {
+      input.replaceWith(courseNameEl);
+    }
+  });
+});
+
+    deleteCourseBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      openDeleteCourseModal(courseId);
+    });
+
+    coursesGrid.appendChild(card);
+  });
+}
 
   async function loadCourses() {
     clearMessage();

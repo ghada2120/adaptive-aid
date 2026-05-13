@@ -5,6 +5,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const registerForm = document.getElementById("registerForm");
   const registerMessage = document.getElementById("registerMessage");
   const registerBtn = document.getElementById("registerBtn");
+  const urlParams = new URLSearchParams(window.location.search);
+
+  if (urlParams.get("verification") === "invalid") {
+    showMessage(
+      "This verification link is invalid or expired. Please register again with the same email and we will send you a new verification email.",
+      "error"
+   );
+  }
 
   const passwordInput = document.getElementById("password");
   const ruleLength = document.getElementById("rule-length");
@@ -13,13 +21,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const ruleNumber = document.getElementById("rule-number");
 
   function showMessage(text, type = "error") {
-  registerMessage.className = "message";
+    registerMessage.className = "message";
+    void registerMessage.offsetWidth;
+    registerMessage.textContent = text;
+    registerMessage.className = `message ${type} flash`;
+  }
 
-  void registerMessage.offsetWidth; // forces the message to re-animate
-
-  registerMessage.textContent = text;
-  registerMessage.className = `message ${type} flash`;
-}
+  function showHtmlMessage(html, type = "success") {
+    registerMessage.className = "message";
+    void registerMessage.offsetWidth;
+    registerMessage.innerHTML = html;
+    registerMessage.className = `message ${type} flash`;
+  }
 
   function clearMessage() {
     registerMessage.textContent = "";
@@ -50,52 +63,52 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function validatePassword(password, name, email) {
-  const commonPasswords = [
-    "password",
-    "password123",
-    "12345678",
-    "qwerty123",
-    "admin123"
-  ];
+    const commonPasswords = [
+      "password",
+      "password123",
+      "12345678",
+      "qwerty123",
+      "admin123"
+    ];
 
-  const passwordLower = password.toLowerCase();
-  const nameLower = name.toLowerCase();
-  const emailName = email.split("@")[0].toLowerCase();
+    const passwordLower = password.toLowerCase();
+    const nameLower = name.toLowerCase();
+    const emailName = email.split("@")[0].toLowerCase();
 
-  if (commonPasswords.includes(passwordLower)) {
-    return "Password is too common.";
+    if (commonPasswords.includes(passwordLower)) {
+      return "Password is too common.";
+    }
+
+    if (password.length < 8) {
+      return "Password must be at least 8 characters long.";
+    }
+
+    if (password.length > 64) {
+      return "Password must not be longer than 64 characters.";
+    }
+
+    if (emailName && passwordLower.includes(emailName)) {
+      return "Password cannot contain your email name.";
+    }
+
+    if (nameLower && passwordLower.includes(nameLower)) {
+      return "Password cannot contain your name.";
+    }
+
+    if (!/[A-Z]/.test(password)) {
+      return "Password must contain at least one uppercase letter.";
+    }
+
+    if (!/[a-z]/.test(password)) {
+      return "Password must contain at least one lowercase letter.";
+    }
+
+    if (!/[0-9]/.test(password)) {
+      return "Password must contain at least one number.";
+    }
+
+    return null;
   }
-
-  if (password.length < 8) {
-    return "Password must be at least 8 characters long.";
-  }
-
-  if (password.length > 64) {
-    return "Password must not be longer than 64 characters.";
-  }
-
-  if (emailName && passwordLower.includes(emailName)) {
-    return "Password cannot contain your email name.";
-  }
-
-  if (nameLower && passwordLower.includes(nameLower)) {
-    return "Password cannot contain your name.";
-  }
-
-  if (!/[A-Z]/.test(password)) {
-    return "Password must contain at least one uppercase letter.";
-  }
-
-  if (!/[a-z]/.test(password)) {
-    return "Password must contain at least one lowercase letter.";
-  }
-
-  if (!/[0-9]/.test(password)) {
-    return "Password must contain at least one number.";
-  }
-
-  return null;
-}
 
   if (passwordInput) {
     passwordInput.addEventListener("input", () => {
@@ -122,6 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const passwordError = validatePassword(password, name, email);
+
     if (passwordError) {
       showMessage(passwordError);
       return;
@@ -149,43 +163,37 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      if (data.verification_link) {
-      showMessage(
-        "Registration successful, but the verification email could not be sent. Please use the verification link shown below.",
-        "success"
-      );
-
-      registerMessage.innerHTML = `
-        Registration successful, but the verification email could not be sent.<br><br>
-        Please verify your email using this link:<br>
-        <a href="${data.verification_link}" target="_blank">Verify Email</a>
-        `;
+      if (data.account_exists && data.is_email_verified === false) {
+        if (data.verification_link) {
+          showHtmlMessage(`
+            This email is already registered but has not been verified yet.<br><br>
+            We could not send the verification email. Use this testing link to verify your account:<br>
+            <a href="${data.verification_link}">Verify Email</a>
+          `);
+        } else {
+          showMessage(
+            "This email is already registered but has not been verified yet. Please check your email to verify your account before logging in.",
+            "success"
+          );
+        }
 
         return;
-}
+      }
 
-showMessage(
-  data.message || "Account created. Please verify your email before logging in.",
-  "success"
-);
+      if (data.verification_link) {
+        showHtmlMessage(`
+          Account created, but the verification email could not be sent.<br><br>
+          Use this testing link to verify your account:<br>
+          <a href="${data.verification_link}">Verify Email</a>
+        `);
 
-if (data.verification_link) {
-  registerMessage.innerHTML = `
-    Account created, but the verification email could not be sent.<br><br>
-    Please verify your email using this link:<br>
-    <a href="${data.verification_link}" target="_blank">Verify Email</a>
-    <br><br>
-    After verifying, you can <a href="login.html">go to login</a>.
-  `;
-} else {
-  registerMessage.innerHTML = `
-    Account created successfully.<br>
-    Please check your email and verify your account before logging in.<br><br>
-    <a href="login.html">Go to Login</a>
-  `;
-}
+        return;
+      }
 
-
+      showMessage(
+        "Account created successfully. Please check your email to verify your account before logging in.",
+        "success"
+      );
 
     } catch (error) {
       console.error("Registration error:", error);

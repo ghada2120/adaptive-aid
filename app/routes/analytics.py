@@ -32,7 +32,8 @@ def get_student_course_analytics(
     student_id: int,
     session: Session = Depends(get_session)
 ):
-    courses = session.exec(select(Course)).all()
+    courses = session.exec(
+    select(Course).where(Course.student_id == student_id)).all()
 
     result = []
 
@@ -88,6 +89,9 @@ def get_course_report_history(
 
     if not course:
         raise HTTPException(status_code=404, detail="Course not found")
+
+    if course.student_id != student_id:
+        raise HTTPException(status_code=403, detail="You do not have access to this course")
 
     quizzes = session.exec(
         select(Quiz).where(
