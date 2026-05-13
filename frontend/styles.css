@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Arial, sans-serif;
+    font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
 }
 
 body {
@@ -10,140 +10,145 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: url('https://img.freepik.com/free-vector/dark-galaxy-background-with-stars_23-2148901558.jpg') no-repeat center center fixed;
+    /* خلفية المجرة العميقة مطابقة للصورة */
+    background: radial-gradient(circle at 50% 50%, #1a1a3a 0%, #05050a 100%);
+    background-image: url('https://img.freepik.com/free-vector/dark-galaxy-background-with-stars_23-2148901558.jpg');
     background-size: cover;
+    background-position: center;
     overflow: hidden;
 }
 
-.container {
-    width: 390px;
-    padding: 45px 35px;
-    border-radius: 25px;
-    background: rgba(15, 15, 35, 0.7);
+.login-card {
+    width: 400px;
+    padding: 50px 40px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-}
-
-.logo {
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.02);
     text-align: center;
-    margin-bottom: 15px;
+    color: white;
 }
 
-.logo i {
-    font-size: 65px;
-    background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+.graduation-icon {
+    font-size: 60px;
+    background: linear-gradient(135deg, #7c3aed 0%, #3b82f6 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 10px rgba(124, 58, 237, 0.3));
+    margin-bottom: 10px;
 }
 
 h1 {
-    text-align: center;
-    color: #fff;
     font-size: 32px;
     font-weight: 700;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
     letter-spacing: 0.5px;
 }
 
 .subtitle {
-    text-align: center;
-    color: rgba(255, 255, 255, 0.6);
     font-size: 14px;
-    margin-bottom: 30px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 35px;
+}
+
+.input-group {
+    text-align: left;
+    margin-bottom: 20px;
 }
 
 label {
     display: block;
-    color: #fff;
-    font-size: 14px;
+    font-size: 13px;
+    font-weight: 500;
     margin-bottom: 8px;
-    margin-top: 15px;
+    color: rgba(255, 255, 255, 0.8);
 }
 
-.input-box {
-    position: relative;
-    margin-bottom: 15px;
-}
-
-.input-box input {
-    width: 100%;
-    height: 50px;
+.input-wrapper {
+    display: flex;
+    align-items: center;
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 12px;
-    outline: none;
-    color: #fff;
-    padding: 0 45px;
-    font-size: 14px;
-    transition: 0.3s;
+    padding: 0 15px;
+    height: 52px;
+    transition: all 0.3s ease;
 }
 
-.input-box input:focus {
-    border-color: #a18cd1;
-    background: rgba(255, 255, 255, 0.1);
+.input-wrapper:focus-within {
+    border-color: #7c3aed;
+    background: rgba(255, 255, 255, 0.08);
 }
 
-.icon-left {
-    position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
+.input-wrapper i {
     color: rgba(255, 255, 255, 0.5);
+    font-size: 16px;
 }
 
-.icon-right {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: rgba(255, 255, 255, 0.5);
-    cursor: pointer;
-}
-
-button {
-    width: 100%;
-    height: 55px;
+.input-wrapper input {
+    background: transparent;
     border: none;
-    border-radius: 30px;
-    background: linear-gradient(90deg, #8e2de2, #4a00e0);
-    color: #fff;
+    outline: none;
+    color: white;
+    width: 100%;
+    padding: 0 12px;
+    font-size: 14px;
+}
+
+.input-wrapper input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.toggle-password {
+    cursor: pointer;
+    font-size: 14px !important;
+}
+
+.login-btn {
+    width: 100%;
+    height: 56px;
+    margin-top: 25px;
+    border: none;
+    border-radius: 28px;
+    background: linear-gradient(90deg, #7c3aed, #3b82f6);
+    color: white;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    margin-top: 20px;
-    transition: 0.4s;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-button:hover {
+.login-btn:hover {
     opacity: 0.9;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(142, 45, 226, 0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(124, 58, 237, 0.3);
 }
 
-.forgot {
+.forgot-link {
     display: block;
-    text-align: center;
     margin-top: 25px;
-    color: #a18cd1;
+    color: #a78bfa;
     text-decoration: none;
     font-size: 13px;
+    transition: color 0.3s;
 }
 
-.register {
-    text-align: center;
+.forgot-link:hover { color: #c4b5fd; }
+
+.register-text {
     margin-top: 30px;
-    color: rgba(255, 255, 255, 0.5);
     font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
 }
 
-.register a {
-    color: #8e2de2;
+.register-text a {
+    color: #60a5fa;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 600;
 }
