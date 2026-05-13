@@ -3,112 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adaptive Aid - Login</title>
-    <!-- استدعاء الأيقونات -->
+    <title>Adaptive Aid - Professional Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         
         body {
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            /* اللون النيلي الغامق الموحد */
-            background-color: #0a0a23; 
+            background-color: #0a0a23; /* اللون النيلي الغامق */
             overflow: hidden;
         }
 
         .login-card {
-            width: 390px;
-            padding: 45px 35px;
-            /* جعل خلفية البطاقة أغمق قليلاً لتتناسب مع الخلفية النيلية */
-            background: rgba(255, 255, 255, 0.03); 
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 25px;
+            width: 400px;
+            padding: 50px 40px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 28px;
+            /* توهج خفيف على حواف البطاقة */
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(129, 140, 248, 0.05);
             text-align: center;
             color: white;
+            position: relative;
         }
 
-        .logo i {
-            font-size: 65px;
-            /* تدرج لوني هادئ للأيقونة يناسب اللون النيلي */
-            background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
+        /* توهج الأيقونة العلوية مثل image_40.png */
+        .logo-glow {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: rgba(129, 140, 248, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgba(129, 140, 248, 0.3);
+            box-shadow: 0 0 20px rgba(129, 140, 248, 0.4);
         }
 
-        h1 { font-size: 30px; font-weight: 700; margin-bottom: 5px; letter-spacing: 0.5px; }
-        
-        .subtitle { font-size: 14px; color: rgba(255, 255, 255, 0.5); margin-bottom: 30px; }
+        .logo-glow i {
+            font-size: 35px;
+            color: #818cf8;
+            filter: drop-shadow(0 0 8px rgba(129, 140, 248, 0.8));
+        }
 
-        .input-group { text-align: left; margin-bottom: 18px; }
+        h1 { font-size: 32px; font-weight: 700; margin-bottom: 5px; }
+        .subtitle { font-size: 14px; color: rgba(255, 255, 255, 0.5); margin-bottom: 35px; }
 
-        label { display: block; font-size: 13px; margin-bottom: 8px; color: rgba(255, 255, 255, 0.8); }
+        .input-group { text-align: left; margin-bottom: 20px; }
+        label { display: block; font-size: 13px; margin-bottom: 8px; color: rgba(255, 255, 255, 0.7); }
 
         .input-wrapper {
             display: flex;
             align-items: center;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 0 15px;
-            height: 50px;
+            height: 54px;
             transition: 0.3s;
         }
 
         .input-wrapper:focus-within {
             border-color: #818cf8;
-            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 15px rgba(129, 140, 248, 0.2);
         }
 
         .input-wrapper input {
-            background: transparent;
-            border: none;
-            outline: none;
-            color: white;
-            width: 100%;
-            padding-left: 12px;
-            font-size: 14px;
+            background: transparent; border: none; outline: none; color: white; width: 100%; padding-left: 12px;
         }
 
-        .input-wrapper i { color: rgba(255, 255, 255, 0.4); font-size: 16px; }
+        .input-wrapper i { color: rgba(255, 255, 255, 0.4); }
 
+        /* الزر المتوهج مثل الصورة */
         .login-btn {
             width: 100%;
-            height: 55px;
-            margin-top: 20px;
+            height: 58px;
+            margin-top: 15px;
             border: none;
             border-radius: 30px;
-            /* زر بلون نيلي مشرق قليلاً لكي يبرز */
-            background: linear-gradient(90deg, #6366f1, #a855f7);
+            background: linear-gradient(90deg, #c026d3, #2563eb);
             color: white;
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 600;
             cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
             transition: 0.3s;
         }
 
         .login-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 15px 30px rgba(37, 99, 235, 0.6);
         }
 
-        .forgot { display: block; margin-top: 20px; color: #818cf8; text-decoration: none; font-size: 13px; }
-
-        .register { margin-top: 25px; font-size: 13px; color: rgba(255, 255, 255, 0.4); }
-
+        .forgot { display: block; margin-top: 25px; color: #818cf8; text-decoration: none; font-size: 13px; }
+        .register { margin-top: 30px; font-size: 13px; color: rgba(255, 255, 255, 0.4); }
         .register a { color: #818cf8; text-decoration: none; font-weight: 600; }
     </style>
 </head>
 <body>
 
     <div class="login-card">
-        <div class="logo">
+        <div class="logo-glow">
             <i class="fa-solid fa-graduation-cap"></i>
         </div>
         <h1>Adaptive Aid</h1>
@@ -117,7 +122,7 @@
         <div class="input-group">
             <label>Email</label>
             <div class="input-wrapper">
-                <i class="fa-regular fa-envelope"></i>
+                <i class="fa-regular fa-user"></i>
                 <input type="email" placeholder="Enter your email">
             </div>
         </div>
@@ -127,10 +132,13 @@
             <div class="input-wrapper">
                 <i class="fa-solid fa-lock"></i>
                 <input type="password" placeholder="Enter your password">
+                <i class="fa-regular fa-eye" style="cursor: pointer; font-size: 14px;"></i>
             </div>
         </div>
 
-        <button class="login-btn">Login</button>
+        <button class="login-btn">
+            <i class="fa-solid fa-arrow-right"></i> Login
+        </button>
 
         <a href="#" class="forgot">Forgot Password?</a>
         <p class="register">Don't have an account? <a href="#">Register</a></p>
