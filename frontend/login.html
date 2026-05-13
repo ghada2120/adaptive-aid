@@ -4,45 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adaptive Aid - Login</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Font Awesome for Icons -->
+    <!-- استدعاء الأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body {
+            height: 100vh; display: flex; justify-content: center; align-items: center;
+            /* خلفية المجرة الاحترافية */
+            background: url('https://img.freepik.com/free-vector/dark-galaxy-background-with-stars_23-2148901558.jpg') no-repeat center center fixed;
+            background-size: cover; overflow: hidden;
+        }
+        .login-card {
+            width: 390px; padding: 45px 35px; background: rgba(15, 15, 35, 0.7);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6); text-align: center; color: white;
+        }
+        .logo i {
+            font-size: 65px; background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px;
+        }
+        h1 { font-size: 32px; font-weight: 700; margin-bottom: 5px; }
+        .subtitle { font-size: 14px; color: rgba(255, 255, 255, 0.6); margin-bottom: 30px; }
+        .input-group { text-align: left; margin-bottom: 20px; }
+        label { display: block; font-size: 14px; margin-bottom: 8px; color: white; }
+        .input-wrapper {
+            display: flex; align-items: center; background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 0 15px; height: 50px;
+        }
+        .input-wrapper i { color: rgba(255, 255, 255, 0.5); }
+        .input-wrapper input { background: transparent; border: none; outline: none; color: white; width: 100%; padding-left: 10px; }
+        .login-btn {
+            width: 100%; height: 55px; margin-top: 25px; border: none; border-radius: 30px;
+            background: linear-gradient(90deg, #8e2de2, #4a00e0); color: white; font-size: 16px;
+            font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        .forgot { display: block; margin-top: 25px; color: #a18cd1; text-decoration: none; font-size: 13px; }
+        .register { margin-top: 30px; font-size: 13px; color: rgba(255, 255, 255, 0.5); }
+        .register a { color: #8e2de2; text-decoration: none; font-weight: bold; }
+    </style>
 </head>
 <body>
-
     <div class="login-card">
-        <div class="logo-section">
-            <i class="fa-solid fa-graduation-cap graduation-icon"></i>
-            <h1>Adaptive Aid</h1>
-            <p class="subtitle">Login to continue</p>
+        <div class="logo"><i class="fa-solid fa-graduation-cap"></i></div>
+        <h1>Adaptive Aid</h1>
+        <p class="subtitle">Login to continue</p>
+        <div class="input-group">
+            <label>Email</label>
+            <div class="input-wrapper"><i class="fa-regular fa-envelope"></i><input type="email" placeholder="Enter your email"></div>
         </div>
-
-        <div class="form-container">
-            <div class="input-group">
-                <label>Email</label>
-                <div class="input-wrapper">
-                    <i class="fa-regular fa-envelope"></i>
-                    <input type="email" placeholder="Enter your email">
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label>Password</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" placeholder="Enter your password">
-                    <i class="fa-regular fa-eye toggle-password"></i>
-                </div>
-            </div>
-
-            <button class="login-btn">
-                <i class="fa-solid fa-right-to-bracket"></i> Login
-            </button>
+        <div class="input-group">
+            <label>Password</label>
+            <div class="input-wrapper"><i class="fa-solid fa-lock"></i><input type="password" placeholder="Enter your password"></div>
         </div>
-
-        <a href="#" class="forgot-link">Forgot Password?</a>
-        <p class="register-text">Don't have an account? <a href="#">Register</a></p>
+        <button class="login-btn">Login</button>
+        <a href="#" class="forgot">Forgot Password?</a>
+        <p class="register">Don't have an account? <a href="#">Register</a></p>
     </div>
-
 </body>
 </html>
