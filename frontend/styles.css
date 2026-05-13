@@ -2,20 +2,20 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: url('https://img.freepik.com/free-vector/dark-galaxy-background-with-stars-shining_1017-33433.jpg') no-repeat center center fixed;
-    background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background: url('https://img.freepik.com/free-vector/dark-galaxy-background-with-stars_23-2148901558.jpg') no-repeat center center fixed !important;
+    background-size: cover !important;
     height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .login-card {
-    background: rgba(15, 15, 35, 0.7); /* لون داكن شفاف */
-    backdrop-filter: blur(20px);
+    background: rgba(15, 15, 35, 0.75);
+    backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 25px;
-    padding: 50px 40px;
+    border-radius: 20px;
+    padding: 40px;
     width: 380px;
     text-align: center;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
@@ -23,58 +23,10 @@ body {
 }
 
 .graduation-icon {
-    font-size: 50px;
-    background: linear-gradient(to bottom, #8e2de2, #4a00e0);
+    font-size: 70px !important;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 10px;
+    display: block;
 }
-
-h1 { margin: 10px 0 5px; font-size: 28px; font-weight: 600; }
-.subtitle { color: #aaa; font-size: 14px; margin-bottom: 30px; }
-
-.input-group { text-align: left; margin-bottom: 20px; }
-.input-group label { display: block; font-size: 14px; margin-bottom: 8px; color: #ddd; }
-
-.input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    padding: 12px 15px;
-}
-
-.input-wrapper i { color: #888; font-size: 16px; }
-.input-wrapper input {
-    background: transparent;
-    border: none;
-    color: white;
-    padding-left: 15px;
-    width: 100%;
-    outline: none;
-}
-
-.login-button {
-    width: 100%;
-    padding: 15px;
-    border-radius: 30px;
-    border: none;
-    background: linear-gradient(90deg, #8e2de2, #4a00e0);
-    color: white;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    transition: 0.3s;
-}
-
-.login-button:hover { opacity: 0.9; transform: translateY(-2px); }
-.forgot-password { display: block; margin-top: 20px; color: #8e2de2; text-decoration: none; font-size: 13px; }
-.register-text { margin-top: 30px; font-size: 13px; color: #aaa; }
-.register-text a { color: #4a00e0; text-decoration: none; font-weight: bold; }
