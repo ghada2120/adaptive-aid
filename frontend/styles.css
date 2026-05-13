@@ -2,7 +2,7 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial, sans-serif;
+    font-family:Arial,sans-serif;
 }
 
 body{
@@ -11,36 +11,34 @@ body{
     justify-content:center;
     align-items:center;
 
-    background:
-    radial-gradient(circle at top right,#4f0d8d 0%,transparent 25%),
-    radial-gradient(circle at bottom left,#1b1464 0%,transparent 25%),
-    #050816;
+    background:#070b1a;
+
+    background-image:
+    radial-gradient(circle at top right,#5b21b6 0%,transparent 25%),
+    radial-gradient(circle at bottom left,#1d4ed8 0%,transparent 25%);
 
     overflow:hidden;
 }
 
-/* Card */
 .container{
-    width:390px;
+    width:380px;
 
     padding:40px 30px;
 
-    border-radius:18px;
+    border-radius:20px;
 
-    background:rgba(8,12,30,0.92);
+    background:rgba(7,10,25,0.95);
 
-    border:1px solid rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.1);
 
-    box-shadow:
-    0 0 30px rgba(119,0,255,0.25);
+    box-shadow:0 0 30px rgba(98,0,255,0.25);
 
     backdrop-filter:blur(12px);
 }
 
-/* Logo */
 .logo{
     text-align:center;
-    margin-bottom:12px;
+    margin-bottom:10px;
 }
 
 .logo i{
@@ -48,50 +46,46 @@ body{
     color:#7c3aed;
 }
 
-/* Title */
 h1{
     text-align:center;
-    color:#fff;
-    font-size:38px;
+    color:white;
+    font-size:42px;
     font-weight:700;
-    margin-bottom:8px;
+    margin-bottom:10px;
 }
 
 .subtitle{
     text-align:center;
-    color:#b9b9c9;
+    color:#b8b8c5;
+    margin-bottom:30px;
     font-size:14px;
-    margin-bottom:28px;
 }
 
-/* Labels */
 label{
-    display:block;
-    color:#fff;
+    color:white;
     font-size:14px;
     margin-bottom:10px;
-    margin-top:15px;
+    display:block;
 }
 
-/* Inputs */
 .input-box{
     position:relative;
-    margin-bottom:18px;
+    margin-bottom:20px;
 }
 
 .input-box input{
     width:100%;
-    height:48px;
+    height:50px;
 
     background:transparent;
 
     border:1px solid rgba(255,255,255,0.08);
 
-    border-radius:8px;
+    border-radius:10px;
 
     outline:none;
 
-    color:#fff;
+    color:white;
 
     padding:0 45px;
 
@@ -99,7 +93,7 @@ label{
 }
 
 .input-box input::placeholder{
-    color:#8d8d99;
+    color:#8b8b99;
 }
 
 .icon-left{
@@ -107,8 +101,7 @@ label{
     left:15px;
     top:50%;
     transform:translateY(-50%);
-    color:#7f7f90;
-    font-size:14px;
+    color:#7c7c8d;
 }
 
 .icon-right{
@@ -116,45 +109,36 @@ label{
     right:15px;
     top:50%;
     transform:translateY(-50%);
-    color:#7f7f90;
-    font-size:14px;
-    cursor:pointer;
+    color:#7c7c8d;
 }
 
-/* Button */
 button{
     width:100%;
-    height:50px;
+    height:52px;
 
     border:none;
+
     border-radius:12px;
 
     background:linear-gradient(90deg,#7c3aed,#2563eb);
 
-    color:#fff;
+    color:white;
 
     font-size:16px;
     font-weight:600;
 
     cursor:pointer;
 
-    margin-top:8px;
-
-    transition:0.3s;
+    margin-top:10px;
 }
 
 button i{
     margin-right:8px;
 }
 
-button:hover{
-    opacity:0.95;
-    transform:scale(1.01);
-}
-
-/* Forgot */
 .forgot{
     display:block;
+
     text-align:center;
 
     margin-top:20px;
@@ -162,22 +146,17 @@ button:hover{
     color:#8b5cf6;
 
     text-decoration:none;
-
-    font-size:14px;
 }
 
-/* Register */
 .register{
     text-align:center;
 
-    margin-top:28px;
+    margin-top:30px;
 
-    color:#b9b9c9;
-
-    font-size:14px;
+    color:#b8b8c5;
 }
 
 .register a{
-    color:#7c3aed;
+    color:#8b5cf6;
     text-decoration:none;
 }
