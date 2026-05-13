@@ -1,32 +1,183 @@
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: url('https://img.freepik.com/free-vector/dark-galaxy-background-with-stars_23-2148901558.jpg') no-repeat center center fixed !important;
-    background-size: cover !important;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
 }
 
-.login-card {
-    background: rgba(15, 15, 35, 0.75);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 40px;
-    width: 380px;
-    text-align: center;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-    color: white;
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+    radial-gradient(circle at top right,#4f0d8d 0%,transparent 25%),
+    radial-gradient(circle at bottom left,#1b1464 0%,transparent 25%),
+    #050816;
+
+    overflow:hidden;
 }
 
-.graduation-icon {
-    font-size: 70px !important;
-    background: linear-gradient(135deg, #6e8efb, #a777e3);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 10px;
-    display: block;
+/* Card */
+.container{
+    width:390px;
+
+    padding:40px 30px;
+
+    border-radius:18px;
+
+    background:rgba(8,12,30,0.92);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    box-shadow:
+    0 0 30px rgba(119,0,255,0.25);
+
+    backdrop-filter:blur(12px);
+}
+
+/* Logo */
+.logo{
+    text-align:center;
+    margin-bottom:12px;
+}
+
+.logo i{
+    font-size:42px;
+    color:#7c3aed;
+}
+
+/* Title */
+h1{
+    text-align:center;
+    color:#fff;
+    font-size:38px;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#b9b9c9;
+    font-size:14px;
+    margin-bottom:28px;
+}
+
+/* Labels */
+label{
+    display:block;
+    color:#fff;
+    font-size:14px;
+    margin-bottom:10px;
+    margin-top:15px;
+}
+
+/* Inputs */
+.input-box{
+    position:relative;
+    margin-bottom:18px;
+}
+
+.input-box input{
+    width:100%;
+    height:48px;
+
+    background:transparent;
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    border-radius:8px;
+
+    outline:none;
+
+    color:#fff;
+
+    padding:0 45px;
+
+    font-size:14px;
+}
+
+.input-box input::placeholder{
+    color:#8d8d99;
+}
+
+.icon-left{
+    position:absolute;
+    left:15px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#7f7f90;
+    font-size:14px;
+}
+
+.icon-right{
+    position:absolute;
+    right:15px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#7f7f90;
+    font-size:14px;
+    cursor:pointer;
+}
+
+/* Button */
+button{
+    width:100%;
+    height:50px;
+
+    border:none;
+    border-radius:12px;
+
+    background:linear-gradient(90deg,#7c3aed,#2563eb);
+
+    color:#fff;
+
+    font-size:16px;
+    font-weight:600;
+
+    cursor:pointer;
+
+    margin-top:8px;
+
+    transition:0.3s;
+}
+
+button i{
+    margin-right:8px;
+}
+
+button:hover{
+    opacity:0.95;
+    transform:scale(1.01);
+}
+
+/* Forgot */
+.forgot{
+    display:block;
+    text-align:center;
+
+    margin-top:20px;
+
+    color:#8b5cf6;
+
+    text-decoration:none;
+
+    font-size:14px;
+}
+
+/* Register */
+.register{
+    text-align:center;
+
+    margin-top:28px;
+
+    color:#b9b9c9;
+
+    font-size:14px;
+}
+
+.register a{
+    color:#7c3aed;
+    text-decoration:none;
 }
