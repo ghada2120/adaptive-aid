@@ -7,155 +7,209 @@
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="styles.css">
 
   <script defer src="js/register.js"></script>
 
   <style>
-    
+    body {
+      background: #0b0e14;
+      background-image: radial-gradient(circle at top right, #1a1f3c, transparent),
+                        radial-gradient(circle at bottom left, #121526, transparent);
+      color: #ffffff;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    /* Glassmorphism Card */
     .auth-card {
       width: 100%;
-      max-width: 480px;
-      background: rgba(255,255,255,0.96);
-      border-radius: 30px;
-      padding: 35px;
-      box-shadow: 0 30px 50px rgba(0,0,0,0.2);
+      max-width: 450px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 28px;
+      padding: 40px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
     }
 
     .auth-header {
       text-align: center;
-      margin-bottom: 25px;
+      margin-bottom: 30px;
+    }
+
+    .auth-badge {
+      width: 60px;
+      height: 60px;
+      background: rgba(61, 90, 254, 0.1);
+      border: 2px solid rgba(61, 90, 254, 0.3);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 15px;
+    }
+
+    .auth-badge i {
+      font-size: 24px;
+      color: #3d5afe;
     }
 
     .auth-header h1 {
-      color: #333;
-      font-size: 30px;
-      margin-bottom: 8px;
+      font-size: 26px;
+      margin: 0;
+      font-weight: 600;
     }
 
     .auth-header p {
-      color: #666;
+      color: rgba(255, 255, 255, 0.6);
       font-size: 14px;
+      margin-top: 5px;
     }
 
+    /* Form Fields */
     .form-group {
-      margin-bottom: 16px;
+      margin-bottom: 20px;
+      text-align: left;
     }
 
     .form-group label {
       display: block;
-      margin-bottom: 7px;
-      color: #333;
-      font-weight: 600;
+      margin-bottom: 8px;
+      color: rgba(255, 255, 255, 0.8);
       font-size: 14px;
+      font-weight: 500;
     }
 
     .form-group input {
       width: 100%;
-      padding: 13px 15px;
-      border: 2px solid #ddd;
+      padding: 13px 18px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 14px;
-      font-family: inherit;
+      color: #fff;
       font-size: 15px;
       outline: none;
-      transition: 0.2s ease;
+      box-sizing: border-box;
+      transition: 0.3s;
     }
 
     .form-group input:focus {
-      border-color: #4158D0;
-      box-shadow: 0 0 0 4px rgba(65, 88, 208, 0.12);
+      border-color: #3d5afe;
+      background: rgba(255, 255, 255, 0.12);
     }
 
+    /* Password Rules Section */
     .password-rules {
-      margin-top: 9px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      background: #f8f9fa;
-      font-size: 13px;
-      color: #666;
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 16px;
+      background: rgba(0, 0, 0, 0.2);
+      font-size: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .password-rules p {
-      margin-bottom: 6px;
-      color: #333;
+      margin-bottom: 8px;
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 600;
     }
 
     .password-rules ul {
-      padding-left: 18px;
+      padding-left: 0;
+      list-style: none;
+      margin: 0;
     }
 
     .password-rules li {
-      margin-bottom: 4px;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255, 255, 255, 0.4);
+      transition: 0.3s;
     }
+
+    .password-rules li i { font-size: 10px; }
 
     .password-rules li.valid {
-      color: #15803d;
+      color: #4ade80;
     }
 
-    .password-rules li.invalid {
-      color: #9ca3af;
+    .password-rules li.valid i::before {
+      content: "\f00c"; /* FontAwesome check icon */
     }
 
-    .btn-primary:active {
-      transform: scale(0.97);
-      box-shadow: 0 4px 10px rgba(65, 88, 208, 0.2);
+    /* Button Styling */
+    .btn-register {
+      background: linear-gradient(90deg, #d83395, #3d5afe);
+      border: none;
+      border-radius: 25px;
+      color: white;
+      padding: 14px;
+      width: 100%;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      transition: 0.3s;
     }
 
-    .btn.loading {
-      opacity: 0.75;
-      cursor: wait;
-      transform: scale(0.98);
-      box-shadow: none;
+    .btn-register:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(216, 51, 149, 0.3);
     }
 
     .auth-footer {
       text-align: center;
-      margin-top: 18px;
-      color: #666;
+      margin-top: 25px;
+      color: rgba(255, 255, 255, 0.6);
       font-size: 14px;
     }
 
     .auth-footer a {
-      color: #4158D0;
+      color: #3d5afe;
       font-weight: 600;
       text-decoration: none;
     }
-    .message.flash {
-      animation: messageFlash 0.25s ease;
+
+    .auth-footer a:hover {
+      text-decoration: underline;
     }
 
-@keyframes messageFlash {
-  0% {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.auth-card .btn {
-  width: 100%;
-  justify-content: center;
-  padding: 14px 22px;
-}
+    .message {
+      margin-bottom: 15px;
+      font-size: 13px;
+      text-align: center;
+    }
   </style>
 </head>
 
-<body class="center-page">
-    <div class="auth-card">
+<body>
+  <div class="auth-card">
     <div class="auth-header">
+      <div class="auth-badge">
+        <i class="fas fa-user-plus"></i>
+      </div>
       <h1>Create Account</h1>
-      <p>Register to start using Adaptive Aid</p>
+      <p>Join Adaptive Aid to start your journey</p>
     </div>
 
     <div id="registerMessage" class="message"></div>
 
     <form id="registerForm">
       <div class="form-group">
-        <label for="name">Name</label>
+        <label for="name">Full Name</label>
         <input type="text" id="name" placeholder="Enter your name" required />
       </div>
 
@@ -166,21 +220,21 @@
 
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Create a password" required />
+        <input type="password" id="password" placeholder="Create a strong password" required />
 
         <div class="password-rules" id="passwordRules">
-          <p><strong>Password must contain:</strong></p>
+          <p>Password requirements:</p>
           <ul>
-            <li id="rule-length" class="invalid">At least 8 characters</li>
-            <li id="rule-uppercase" class="invalid">One uppercase letter</li>
-            <li id="rule-lowercase" class="invalid">One lowercase letter</li>
-            <li id="rule-number" class="invalid">One number</li>
+            <li id="rule-length" class="invalid"><i class="fas fa-circle"></i> At least 8 characters</li>
+            <li id="rule-uppercase" class="invalid"><i class="fas fa-circle"></i> One uppercase letter</li>
+            <li id="rule-lowercase" class="invalid"><i class="fas fa-circle"></i> One lowercase letter</li>
+            <li id="rule-number" class="invalid"><i class="fas fa-circle"></i> One number</li>
           </ul>
         </div>
       </div>
 
-      <button type="submit" class="btn btn-primary" id="registerBtn">
-        <i class="fas fa-user-check"></i> Register
+      <button type="submit" class="btn-register" id="registerBtn">
+        <i class="fas fa-user-check"></i> Register Now
       </button>
     </form>
 
