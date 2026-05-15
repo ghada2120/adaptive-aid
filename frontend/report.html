@@ -7,103 +7,156 @@
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="styles.css">
 
   <script defer src="js/report.js"></script>
 
   <style>
+    body {
+      background: #0b0e14;
+      background-image: radial-gradient(circle at top right, #1a1f3c, transparent),
+                        radial-gradient(circle at bottom left, #121526, transparent);
+      color: #ffffff;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      min-height: 100vh;
+    }
 
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .header {
+      margin-bottom: 40px;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin: 0;
+      background: linear-gradient(to right, #fff, #3d5afe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Score Banner Glass Design */
     .score-banner {
       display: grid;
-      grid-template-columns: 220px 1fr;
-      gap: 20px;
-      margin-bottom: 25px;
+      grid-template-columns: 240px 1fr;
+      gap: 25px;
+      margin-bottom: 30px;
     }
 
     .score-card {
-      background: linear-gradient(145deg, #4158D0, #C850C0);
+      background: linear-gradient(135deg, #d83395, #3d5afe);
       color: white;
       border-radius: 28px;
-      padding: 30px;
+      padding: 40px 20px;
       text-align: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+      box-shadow: 0 10px 30px rgba(61, 90, 254, 0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .score-card .label {
       font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
       opacity: 0.9;
       margin-bottom: 10px;
     }
 
     .score-card .score-text {
-      font-size: 42px;
-      font-weight: 700;
-      line-height: 1.1;
+      font-size: 48px;
+      font-weight: 800;
+      line-height: 1;
     }
 
-    .score-card {
-      background: #4f46e5;
-      color: white;
-      border-radius: 24px;
-      padding: 30px;
-      text-align: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    .score-percent {
+      font-size: 18px;
+      margin-top: 5px;
+      opacity: 0.8;
     }
 
     .summary-card {
-      background: #f8f9fa;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 28px;
-      padding: 25px;
+      padding: 30px;
     }
 
     .summary-card h2 {
-      color: #333;
-      font-size: 22px;
-      margin-bottom: 10px;
+      color: #fff;
+      font-size: 24px;
+      margin-top: 0;
     }
 
     .summary-card p {
-      color: #666;
-      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.8;
+      font-size: 15px;
     }
 
+    /* Stats Grid */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 16px;
-      margin-bottom: 25px;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+      transition: 0.3s;
+    }
+
+    .stat-card:hover {
+      background: rgba(255, 255, 255, 0.06);
     }
 
     .stat-value {
-      font-size: 30px;
+      font-size: 28px;
       font-weight: 700;
-      color: #4158D0;
-      margin-bottom: 6px;
+      color: #3d5afe;
+      margin-bottom: 5px;
     }
 
     .stat-label {
-      color: #666;
-      font-size: 14px;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 13px;
+      text-transform: uppercase;
     }
 
+    /* Strengths & Weaknesses */
     .section-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      margin-bottom: 25px;
+      gap: 25px;
+      margin-bottom: 30px;
     }
 
     .panel {
-      background: #f8f9fa;
-      border-radius: 22px;
-      padding: 22px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 25px;
     }
 
     .panel h3 {
-      color: #333;
-      margin-bottom: 15px;
       font-size: 20px;
+      margin-top: 0;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .tag-list {
@@ -113,59 +166,86 @@
     }
 
     .tag {
-      padding: 10px 14px;
-      border-radius: 999px;
+      padding: 8px 16px;
+      border-radius: 12px;
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 500;
     }
 
     .tag-strong {
-      background: #d4edda;
-      color: #155724;
+      background: rgba(74, 222, 128, 0.1);
+      color: #4ade80;
+      border: 1px solid rgba(74, 222, 128, 0.2);
     }
 
     .tag-weak {
-      background: #f8d7da;
-      color: #721c24;
+      background: rgba(248, 113, 113, 0.1);
+      color: #f87171;
+      border: 1px solid rgba(248, 113, 113, 0.2);
     }
 
+    /* Difficulty Table Glass Design */
     .difficulty-table {
       width: 100%;
       border-collapse: collapse;
-      background: white;
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.06);
-    }
-
-    .difficulty-table th,
-    .difficulty-table td {
-      padding: 14px 16px;
-      text-align: center;
-      border-bottom: 1px solid #eee;
+      margin-top: 10px;
     }
 
     .difficulty-table th {
-      background: #f0f3ff;
-      color: #333;
-      font-weight: 600;
+      text-align: left;
+      padding: 15px;
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 500;
+      font-size: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .difficulty-table tr:last-child td {
-      border-bottom: none;
+    .difficulty-table td {
+      padding: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 15px;
     }
 
+    .difficulty-table tr:last-child td { border: none; }
+
+    /* Actions */
     .actions {
       display: flex;
       justify-content: flex-end;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 25px;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .btn {
+      padding: 12px 25px;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #d83395, #3d5afe);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
 
     @media (max-width: 768px) {
-      .score-banner,
-      .section-grid {
+      .score-banner, .section-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -174,25 +254,23 @@
 <body>
   <div class="container">
     <div class="header">
-      <div>
-        <h1>Evaluation Report</h1>
-        <p id="reportSubtitle">Your session summary</p>
-      </div>
+      <h1>Evaluation Report</h1>
+      <p id="reportSubtitle" style="color: rgba(255,255,255,0.6)">Detailed insights into your learning session</p>
     </div>
 
     <div id="reportMessage" class="message"></div>
 
     <div class="score-banner">
       <div class="score-card">
-        <div class="label">Overall Performance</div>
+        <div class="label">Overall Score</div>
         <div class="score-text" id="scoreText">0/0</div>
         <div class="score-percent" id="scorePercent">0%</div>
       </div>
 
       <div class="summary-card">
-        <h2>Session Summary</h2>
+        <h2><i class="fas fa-chart-line" style="color: #3d5afe; margin-right: 10px;"></i> Session Summary</h2>
         <p id="summaryText">
-          Your performance summary will appear here.
+          Your performance results are being calculated...
         </p>
       </div>
     </div>
@@ -200,18 +278,18 @@
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-value" id="durationValue">0m 0s</div>
-        <div class="stat-label">Session Duration</div>
+        <div class="stat-label">Duration</div>
       </div>
       <div class="stat-card">
         <div class="stat-value" id="answeredValue">0</div>
         <div class="stat-label">Answered</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value" id="correctValue">0</div>
+        <div class="stat-value" id="correctValue" style="color: #4ade80;">0</div>
         <div class="stat-label">Correct</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value" id="wrongValue">0</div>
+        <div class="stat-value" id="wrongValue" style="color: #f87171;">0</div>
         <div class="stat-label">Wrong</div>
       </div>
       <div class="stat-card">
@@ -222,22 +300,22 @@
 
     <div class="section-grid">
       <div class="panel">
-        <h3>Strengths</h3>
+        <h3><i class="fas fa-check-circle" style="color: #4ade80;"></i> Strengths</h3>
         <div class="tag-list" id="strengthsList"></div>
       </div>
 
       <div class="panel">
-        <h3>Weaknesses</h3>
+        <h3><i class="fas fa-exclamation-circle" style="color: #f87171;"></i> Areas to Improve</h3>
         <div class="tag-list" id="weaknessesList"></div>
       </div>
     </div>
 
     <div class="panel">
-      <h3>Performance by Difficulty</h3>
+      <h3><i class="fas fa-layer-group" style="color: #3d5afe;"></i> Performance by Difficulty</h3>
       <table class="difficulty-table">
         <thead>
           <tr>
-            <th>Difficulty</th>
+            <th>Level</th>
             <th>Correct</th>
             <th>Wrong</th>
             <th>Skipped</th>
@@ -268,10 +346,10 @@
 
     <div class="actions">
       <button class="btn btn-secondary" id="backToMaterialsBtn">
-        Back to Materials
+        <i class="fas fa-arrow-left"></i> Materials
       </button>
       <button class="btn btn-primary" id="newSessionBtn">
-        Start New Session
+        <i class="fas fa-redo"></i> New Session
       </button>
     </div>
   </div>
