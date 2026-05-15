@@ -3,139 +3,173 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Adaptive Aid - Session</title>
+  <title>Adaptive Aid - Learning Session</title>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="styles.css">
 
   <script defer src="js/session.js"></script>
 
   <style>
-  
+    body {
+      background: #0b0e14;
+      background-image: radial-gradient(circle at top right, #1a1f3c, transparent),
+                        radial-gradient(circle at bottom left, #121526, transparent);
+      color: #ffffff;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 30px;
+      gap: 20px;
+    }
+
     .course-info h2 {
-      color: #333;
-      font-size: 24px;
-      margin-bottom: 5px;
+      color: #fff;
+      font-size: 26px;
+      margin: 0;
     }
 
     .course-info p {
-      color: #666;
+      color: rgba(255, 255, 255, 0.5);
       font-size: 14px;
+      margin-top: 5px;
     }
 
+    /* Stats Row Glass Design */
     .session-info {
       display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
+      gap: 12px;
     }
 
     .info-item {
-      background: white;
-      padding: 12px 18px;
-      border-radius: 15px;
-      min-width: 100px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      padding: 10px 15px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       text-align: center;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      min-width: 85px;
     }
 
     .info-item .label {
-      color: #666;
-      font-size: 13px;
-      margin-bottom: 5px;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .info-item .value {
-      color: #4158D0;
-      font-size: 22px;
+      color: #3d5afe;
+      font-size: 18px;
       font-weight: 700;
     }
 
+    /* Feedback Messages */
     .feedback-message {
-      margin-bottom: 18px;
-      padding: 14px 18px;
+      padding: 15px 20px;
       border-radius: 14px;
+      margin-bottom: 20px;
       display: none;
       font-weight: 500;
+      text-align: center;
+      backdrop-filter: blur(10px);
     }
 
     .feedback-message.success {
       display: block;
-      background: #d4edda;
-      color: #155724;
+      background: rgba(74, 222, 128, 0.1);
+      color: #4ade80;
+      border: 1px solid rgba(74, 222, 128, 0.2);
     }
 
     .feedback-message.error {
       display: block;
-      background: #f8d7da;
-      color: #721c24;
+      background: rgba(248, 113, 113, 0.1);
+      color: #f87171;
+      border: 1px solid rgba(248, 113, 113, 0.2);
     }
 
+    /* Difficulty Badge */
     .difficulty-badge {
       display: inline-block;
-      padding: 8px 18px;
-      border-radius: 25px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 12px;
       font-weight: 600;
-      margin-bottom: 18px;
-      background: #eef2ff;
-      color: #4158D0;
-      border: 1px solid rgba(65, 88, 208, 0.15);
+      margin-bottom: 20px;
+      background: rgba(61, 90, 254, 0.1);
+      color: #3d5afe;
+      border: 1px solid rgba(61, 90, 254, 0.2);
     }
 
+    /* Question Card Glassmorphism */
     .question-card {
-      background: white;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 28px;
-      padding: 35px;
-      margin-bottom: 25px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    }
-
-    .question-card.fade-swap {
-      animation: questionFadeSwap 0.35s ease;
+      padding: 40px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
     }
 
     .question-text {
-      font-size: 24px;
-      color: #333;
-      margin-bottom: 25px;
-      line-height: 1.6;
+      font-size: 22px;
+      color: #fff;
+      margin-bottom: 30px;
+      line-height: 1.5;
     }
 
+    /* Options List */
     .options-list {
       display: grid;
-      gap: 14px;
+      gap: 15px;
     }
 
     .option-item {
-      background: #f8f9fa;
-      border: 3px solid #e0e0e0;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 18px;
-      padding: 18px 22px;
+      padding: 18px 25px;
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 15px;
       cursor: pointer;
-      transition: 0.2s ease;
+      transition: all 0.2s ease;
     }
 
     .option-item:hover {
-      border-color: #4158D0;
-      background: #f0f3ff;
-      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.08);
+      border-color: #3d5afe;
+      transform: translateX(5px);
     }
 
     .option-item.selected {
-      border-color: #4158D0;
-      background: #f0f3ff;
+      background: rgba(61, 90, 254, 0.1);
+      border-color: #3d5afe;
+      box-shadow: 0 0 15px rgba(61, 90, 254, 0.2);
     }
 
     .option-prefix {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: #4158D0;
-      color: white;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -143,74 +177,48 @@
       flex-shrink: 0;
     }
 
+    /* States for evaluation */
+    .option-item.locked { pointer-events: none; }
+    .option-item.correct-answer {
+      border-color: #4ade80;
+      background: rgba(74, 222, 128, 0.15);
+    }
+    .option-item.wrong-answer {
+      border-color: #f87171;
+      background: rgba(248, 113, 113, 0.15);
+    }
+
+    /* Bottom Actions */
     .action-buttons {
       display: flex;
       justify-content: flex-end;
-      gap: 12px;
-      flex-wrap: wrap;
+      gap: 15px;
     }
 
-    @keyframes questionFadeSwap {
-      0% {
-        opacity: 0.45;
-        transform: translateY(10px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .btn {
+      padding: 14px 28px;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
+
+    .btn-primary { background: linear-gradient(90deg, #d83395, #3d5afe); color: white; }
+    .btn-secondary { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
+    .btn-danger { background: rgba(248, 113, 113, 0.1); color: #f87171; border: 1px solid rgba(248,113,113,0.2); }
+
+    .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
     @media (max-width: 768px) {
-      .container {
-        padding: 20px;
-      }
-
-      .question-card {
-        padding: 24px;
-      }
-
-      .question-text {
-        font-size: 20px;
-      }
-
-      .header {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .session-info {
-        justify-content: space-between;
-      }
-
-      .info-item {
-        flex: 1;
-        min-width: 80px;
-      }
-
-      .action-buttons {
-        justify-content: stretch;
-      }
-
-      .action-buttons .btn {
-        flex: 1;
-      }
+      .header { flex-direction: column; }
+      .action-buttons { flex-direction: column; }
+      .btn { width: 100%; justify-content: center; }
     }
-
-.option-item.locked {
-  cursor: default;
-  pointer-events: none;
-}
-
-.option-item.correct-answer {
-  border-color: #198754;
-  background: #d1e7dd;
-}
-
-.option-item.wrong-answer {
-  border-color: #dc3545;
-  background: #f8d7da;
-}
   </style>
 </head>
 
@@ -218,26 +226,19 @@
   <div class="container">
     <div class="header">
       <div class="course-info">
-        <h2 id="testCourseName">Course Name</h2>
-        <p id="testChapterName">Material Name</p>
+        <h2 id="testCourseName">Learning Session</h2>
+        <p id="testChapterName">Module Material</p>
       </div>
 
       <div class="session-info">
         <div class="info-item">
           <div class="label">Question</div>
-          <div class="value" id="currentQuestion">Q1</div>
+          <div class="value" id="currentQuestion">0/0</div>
         </div>
-
         <div class="info-item">
           <div class="label">Time</div>
           <div class="value" id="sessionTimer">00:00</div>
         </div>
-
-        <div class="info-item">
-          <div class="label">Difficulty</div>
-          <div class="value" id="difficultyMini">-</div>
-        </div>
-
         <div class="info-item">
           <div class="label">Score</div>
           <div class="value" id="score">0</div>
@@ -247,30 +248,30 @@
 
     <div id="sessionMessage" class="feedback-message"></div>
 
-    <div class="difficulty-badge" id="difficultyBadge">Medium</div>
+    <div class="difficulty-badge" id="difficultyBadge">Adaptivity: Ready</div>
 
-    <div class="question-card">
-      <div class="question-text" id="questionText">Preparing your first question...</div>
-      <div class="options-list" id="optionsList"></div>
+    <div class="question-card" id="questionBox">
+      <div class="question-text" id="questionText">AI is generating your question...</div>
+      <div class="options-list" id="optionsList">
+        </div>
     </div>
 
     <div class="action-buttons">
+      <button class="btn btn-danger" id="endSessionBtn">
+        <i class="fas fa-times-circle"></i> Quit
+      </button>
+
       <button class="btn btn-secondary" id="skipBtn">
         <i class="fas fa-forward"></i> Skip
       </button>
 
-      <button class="btn btn-danger" id="endSessionBtn">
-        <i class="fas fa-stop"></i> End Session
-      </button>
-
       <button class="btn btn-primary" id="submitBtn">
-        <i class="fas fa-check"></i> Submit
+        <i class="fas fa-check-circle"></i> Submit Answer
       </button>
 
       <button class="btn btn-primary" id="nextQuestionBtn" style="display: none;">
-        <i class="fas fa-arrow-right"></i> Next Question
-        </button>
-
+        Next Question <i class="fas fa-arrow-right"></i>
+      </button>
     </div>
   </div>
 </body>
