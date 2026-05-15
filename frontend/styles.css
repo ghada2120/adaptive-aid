@@ -1,1 +1,194 @@
+/* --- Root Variables & Base Setup --- */
+:root {
+  --primary-gradient: linear-gradient(90deg, #d83395, #3d5afe);
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --text-main: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.6);
+  --bg-dark: #0b0e14;
+  --accent-blue: #3d5afe;
+  --accent-pink: #d83395;
+  --success: #4ade80;
+  --error: #f87171;
+}
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--bg-dark);
+  background-image: radial-gradient(circle at top right, #1a1f3c, transparent),
+                    radial-gradient(circle at bottom left, #121526, transparent);
+  min-height: 100vh;
+  color: var(--text-main);
+  line-height: 1.6;
+}
+
+/* --- Layout Containers --- */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.topbar, .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+  padding: 25px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(15px);
+  border-radius: 24px;
+  border: 1px solid var(--glass-border);
+}
+
+.topbar h1, .header h1 {
+  font-size: 28px;
+  background: linear-gradient(to right, #fff, var(--accent-blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* --- Buttons --- */
+.btn {
+  border: none;
+  border-radius: 25px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--primary-gradient);
+  color: white;
+  box-shadow: 0 4px 15px rgba(61, 90, 254, 0.2);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(216, 51, 149, 0.3);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  border: 1px solid var(--glass-border);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-danger {
+  background: rgba(248, 113, 113, 0.1);
+  color: var(--error);
+  border: 1px solid rgba(248, 113, 113, 0.2);
+}
+
+/* --- Cards (Course, File, Stat) --- */
+.course-card, .file-card, .stat-card, .panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 22px;
+  padding: 25px;
+  transition: all 0.3s ease;
+}
+
+.course-card:hover, .file-card:hover {
+  border-color: var(--accent-blue);
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.course-card.selected, .file-card.selected {
+  border-color: var(--accent-blue);
+  background: rgba(61, 90, 254, 0.1);
+  box-shadow: 0 0 20px rgba(61, 90, 254, 0.1);
+}
+
+/* --- Authentication & Forms --- */
+.auth-input {
+  width: 100%;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  color: white;
+  font-size: 15px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.auth-input:focus {
+  border-color: var(--accent-blue);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* --- Modals --- */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #161b33;
+  border: 1px solid var(--glass-border);
+  padding: 35px;
+  border-radius: 28px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+
+/* --- Messages --- */
+.message {
+  padding: 14px;
+  border-radius: 14px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.message.error { background: rgba(248, 113, 113, 0.1); color: var(--error); border: 1px solid rgba(248, 113, 113, 0.2); }
+.message.success { background: rgba(74, 222, 128, 0.1); color: var(--success); border: 1px solid rgba(74, 222, 128, 0.2); }
+
+/* --- Helper Classes --- */
+.center-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.hidden { display: none !important; }
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+  .topbar, .header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .btn { width: 100%; }
+}
