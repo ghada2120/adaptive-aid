@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adaptive Aid - Report History</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <script defer src="js/report_history.js"></script>
+
+  <style>
+    body {
+      background: #0b0e14;
+      background-image: radial-gradient(circle at top right, #1a1f3c, transparent),
+                        radial-gradient(circle at bottom left, #121526, transparent);
+      color: #ffffff;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .topbar h1 {
+      font-size: 2rem;
+      margin: 0;
+      background: linear-gradient(to right, #fff, #3d5afe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .topbar p {
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 5px;
+    }
+
+    /* Reports List Layout */
+    .reports-list {
+      display: grid;
+      gap: 20px;
+    }
+
+    /* Report Item Glass Card */
+    .report-item {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 22px;
+      padding: 20px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: 0.3s ease;
+      cursor: pointer;
+    }
+
+    .report-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateX(5px);
+      border-color: #3d5afe;
+    }
+
+    .report-info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .report-icon {
+      width: 50px;
+      height: 50px;
+      background: rgba(61, 90, 254, 0.1);
+      color: #3d5afe;
+      border-radius: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+    }
+
+    .report-details h3 {
+      color: #fff;
+      margin: 0 0 5px 0;
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    .report-details p {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 13px;
+      margin: 0;
+    }
+
+    /* Dynamic Score Badge */
+    .score-badge {
+      background: linear-gradient(90deg, #d83395, #3d5afe);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 15px;
+      box-shadow: 0 4px 15px rgba(216, 51, 149, 0.2);
+    }
+
+    /* Empty State */
+    .empty-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 2px dashed rgba(255, 255, 255, 0.1);
+      border-radius: 28px;
+      padding: 60px 40px;
+      color: rgba(255, 255, 255, 0.4);
+      text-align: center;
+    }
+
+    .empty-card i {
+      font-size: 50px;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 12px 22px;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .message {
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .report-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+      .score-badge {
+        align-self: flex-end;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div>
+        <h1 id="historyTitle">Report History</h1>
+        <p id="historySubtitle">Review your academic progress and previous scores</p>
+      </div>
+
+      <button class="btn btn-secondary" id="backToCoursesBtn">
+        <i class="fas fa-arrow-left"></i> Courses
+      </button>
+    </div>
+
+    <div id="historyMessage" class="message"></div>
+
+    <div class="reports-list" id="reportsList">
+      </div>
+  </div>
+</body>
+</html>

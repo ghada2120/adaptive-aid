@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Adaptive Aid - Verification</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <script defer src="js/verify_success.js"></script>
+
+  <style>
+    body {
+      background: #0b0e14;
+      background-image: radial-gradient(circle at top right, #1a1f3c, transparent),
+                        radial-gradient(circle at bottom left, #121526, transparent);
+      color: #ffffff;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* Glassmorphism Verification Card */
+    .verify-card {
+      width: 100%;
+      max-width: 450px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 30px;
+      padding: 50px 40px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .verify-icon {
+      font-size: 70px;
+      margin-bottom: 25px;
+      display: inline-block;
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* Success state colors (managed by JS via classes) */
+    .success-icon { color: #4ade80; text-shadow: 0 0 20px rgba(74, 222, 128, 0.3); }
+    .error-icon { color: #f87171; text-shadow: 0 0 20px rgba(248, 113, 113, 0.3); }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      background: linear-gradient(to right, #fff, #3d5afe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 35px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #d83395, #3d5afe);
+      border: none;
+      border-radius: 25px;
+      color: white;
+      padding: 14px 40px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: 0.3s ease;
+      box-shadow: 0 4px 15px rgba(61, 90, 254, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(216, 51, 149, 0.4);
+    }
+
+    /* Animation for the card appear */
+    .verify-card {
+      animation: cardSlideIn 0.6s ease-out;
+    }
+
+    @keyframes cardSlideIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body class="center-page">
+  <div class="verify-card">
+    <div id="icon" class="verify-icon"></div>
+
+    <h1 id="title">Verifying...</h1>
+    <p id="message">Please wait while we check your verification link.</p>
+
+    <a href="login.html" class="btn btn-primary">
+      <i class="fas fa-sign-in-alt"></i> Go to Login
+    </a>
+  </div>
+</body>
+</html>
